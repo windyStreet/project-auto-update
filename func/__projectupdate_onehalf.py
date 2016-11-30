@@ -13,6 +13,8 @@ import NginxFunc
 class __projectupdate_onehalf(object):
     def __init__(self):
         print('__projectupdate_onehalf')
+def process(projectJson):
+    print(projectJson)
 '''
     A、关闭健康检查服务
     B、读取配置文件

@@ -9,10 +9,45 @@ import socket
 import FormatPrint
 import TomcatFunc
 import NginxFunc
+import __jsonFileFunc
+import __projectupdate_double
+import __projectupdate_onehalf
+import __projectupdate_single
 
 class ProjectUpdate(object):
     def __init__(self):
-        print('ProjectUpdate')
+        self.projectName=None
+        self.updateVersion=None
+        self.updateTime=None
+        self.updateType=None
+        self.deploymentmode=None
+        self.tomcatConf=None
+
+def projectUpdate(projectName,updateVersion,updateType,updateTime):
+    pu=ProjectUpdate()
+    pu.projectName=projectName
+    pu.updateVersion=updateVersion
+    pu.updateType=updateType
+    pu.updateTime=updateTime
+    tomcatPath=sys.path[0] + os.sep + 'conf' + os.sep + 'tomcat-conf.json'
+    pu.tomcatConf = __jsonFileFunc.readFile(tomcatPath)
+    if pu.tomcatConf is None:
+        FormatPrint.printFalat('can not read tomcat-conf configure')
+    if pu.projectName not in pu.tomcatConf['projectname']:
+        FormatPrint.printFalat(str(pu.projectName)+' not configure in the tomcat-conf.json')
+    pu.deploymentmode=pu.tomcatConf['projectname'][projectName]['deploymentmode']
+
+    if pu.deploymentmode == 'single':
+        print('')
+        __projectupdate_single.process(pu)
+    elif pu.deploymentmode =='onehalf':
+        print('')
+        __projectupdate_onehalf.process(pu)
+    elif pu.deploymentmode == 'double':
+        print('')
+        __projectupdate_double.process(pu)
+    else:
+        FormatPrint.printFalat(str(pu.projectName)+'project configure wrong deploymentmode ')
 
 '''
 1、如果是single模式

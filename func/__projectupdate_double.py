@@ -14,6 +14,8 @@ class __projectupdate_double(object):
     def __init__(self):
         print('__projectupdate_double')
 
+def process(projectJson):
+    print(projectJson)
 '''
     A、关闭健康检查服务
     B、读取配置文件
