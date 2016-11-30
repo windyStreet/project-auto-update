@@ -14,6 +14,7 @@ class NodesHealthCheck(object):
         FormatPrint.printDebug("NodesHealthCheck")
         self.tomcatConf_JSON={}#tomcat组配置信息
         self.nodeHealthStatus_JSON={}#节点健康检查运行状态信息
+        self.deploymentmode='double'#默认使用全组启动方式
 
     #初始化tomcatGroup配置运行信息
     def initTomcatRunStatus(self):
