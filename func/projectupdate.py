@@ -326,6 +326,7 @@ class ProjectUpdate(object):
                     'runtimes': int(willBeUpdateGroupRunStatus_JSON["runtimes"])+1
                 }
                 new_projectTomcatRunStatus_JSON={
+                    "deploymentmode":self.deploymentmode,
                     "currentrun":self.willBeUpdatedGroup,
                     "totalruntimes":int(tomcat_run_status_JSON["projectname"][self.projectName]["totalruntimes"])+1,
                     self.willBeUpdatedGroup:new_updateGroupTomcatRunStatus_JSON,
@@ -350,6 +351,7 @@ class ProjectUpdate(object):
                     "modifytimes":  int(willBeUpdateGroupRunStatus_JSON["modifytimes"])+1
                 }
                 new_projectNginxRunStatus_JSON={
+                    "deploymentmode": self.deploymentmode,
                     "currentrun":self.willBeUpdatedGroup,
                     self.willBeUpdatedGroup:new_updateGroupNginxRunStatus_JSON,
                     self.runGroup:self.crurentProjectRunNginxGroup_JSON[self.runGroup]
