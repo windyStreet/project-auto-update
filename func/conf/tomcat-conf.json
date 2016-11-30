@@ -5,7 +5,7 @@
 	"tomcatmaxrestattime":"6",
 	"projectname": {
 		"YXYBB": {
-			"deploymentmode":"single,double,onehalf",
+			"deploymentmode":"single",
 			"groupmaster": {
 				"tomcatgroupinfo": {
 					"tomcatprojectxmlpath": "./conf/Catalina/localhost",
