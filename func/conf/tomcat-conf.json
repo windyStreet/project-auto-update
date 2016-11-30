@@ -1,0 +1,165 @@
+{
+    "serverip":"220.231.252.72",
+    "hostname":"BBT",
+	"endUpdateWaiteMaxTime":"12",
+	"tomcatmaxrestattime":"6",
+	"projectname": {
+		"YXYBB": {
+			"deploymentmode":"single,double,onehalf",
+			"groupmaster": {
+				"tomcatgroupinfo": {
+					"tomcatprojectxmlpath": "./conf/Catalina/localhost",
+					"tomcatgrouppath": "/usr/local/tomcatgroup/",
+					"tomcats": [
+						{
+                            "tomcattag":"1",
+							"name": "01",
+							"upstreamip": "127.0.0.1",
+                            "serviceip":"220.231.252.72",
+							"port": "64001",
+							"upstreamweight": "1"
+						},
+						{
+                            "tomcattag":"2",
+							"name": "02",
+							"upstreamip": "127.0.0.1",
+                            "serviceip":"220.231.252.72",
+							"port": "64002",
+							"upstreamweight": "1"
+						}
+					]
+				},
+				"servicecheckurl":"/LSIP/restservices/servicecheck/oamp_checkTomcatAvailable/query",
+				"servicecheckpar":"{\"service\":\"timeservice\",\"version\":\"1.0.0\"}",
+				"projectpath": "/usr/longrise/LEAP/YXYBB",
+				"tomcatstartscriptpath":"tomcatstartscriptpath",
+				"tomcatkillscriptpath":"tomcatkillscriptpath",
+				"tomcatresourceupdatescriptpath":"tomcatresourceupdatescriptpath",
+				"upstreamname": "YXYBB",
+				"nginxconfpath": "G:\\python_work\\project-auto-update\\func\\files\\nginx.conf",
+				"nginxreloadcmd": "/usr/local/nginx/sbin/nginx -s reload",
+				"nginxreplacestarttag":"###NGINXREPLACE###START###YXYBB###",
+				"nginxreplaceendtag":"###NGINXREPLACE###END###YXYBB###",
+				"nginxrootstarttag":"###NGINXREPLACE###ROOTSTART###YXYBB###",
+				"nginxrootendtag":"###NGINXREPLACE###ROOTSTART###YXYBB###",
+				"nginxrootconf":"xxxxxxxxxxxxxxxxxxx"
+			},
+			"groupbackup": {
+				"tomcatgroupinfo": {
+					"tomcatprojectxmlpath": "./conf/Catalina/localhost",
+					"tomcatgrouppath": "/usr/local/tomcatgroup/",
+					"tomcats": [
+						{
+                            "tomcattag":"5",
+							"name": "05",
+							"upstreamip": "127.0.0.1",
+                            "serviceip":"220.231.252.72",
+							"port": "64001",
+							"upstreamweight": "1"
+						},
+						{
+                            "tomcattag":"6",
+							"name": "06",
+							"upstreamip": "127.0.0.1",
+                            "serviceip":"220.231.252.72",
+							"port": "64002",
+							"upstreamweight": "1"
+						}
+					]
+				},
+				"servicecheckurl":"/LSIP/restservices/servicecheck/oamp_checkTomcatAvailable/query",
+				"servicecheckpar":"{\"service\":\"timeservice\",\"version\":\"1.0.0\"}",
+				"projectpath": "/usr/longrise/YXYBB",
+				"tomcatstartscriptpath":"tomcatstartscriptpath",
+				"tomcatkillscriptpath":"tomcatkillscriptpath",
+				"tomcatresourceupdatescriptpath":"tomcatresourceupdatescriptpath",
+				"upstreamname": "YXYBB",
+				"nginxconfpath": "G:\\python_work\\project-auto-update\\func\\files\\nginx.conf",
+				"nginxreloadcmd": "/usr/local/nginx/sbin/nginx -s reload",
+				"nginxreplacestarttag":"###NGINXREPLACE###START###YXYBB###",
+				"nginxreplaceendtag":"###NGINXREPLACE###END###YXYBB###",
+				"nginxrootstarttag":"###NGINXREPLACE###ROOTSTART###YXYBB###",
+				"nginxrootendtag":"###NGINXREPLACE###ROOTSTART###YXYBB###",
+				"nginxrootconf":"xxxxxxxxxxxxxxxxxxx"
+			}
+		},
+		"LESP": {
+			"groupmaster": {
+				"tomcatgroupinfo": {
+					"tomcatprojectxmlpath": "./conf/Catalina/localhost",
+					"tomcatgrouppath": "/usr/local/tomcatgroup/",
+					"tomcats": [
+						{
+                            "tomcattag":"3",
+							"name": "03",
+							"upstreamip": "0.0.0.1",
+                            "serviceip":"220.231.252.72",
+							"port": "64003",
+							"upstreamweight": "1"
+						},
+						{
+                            "tomcattag":"4",
+							"name": "04",
+							"upstreamip": "0.0.0.1",
+                            "serviceip":"220.231.252.72",
+							"port": "64005",
+							"upstreamweight": "1"
+						}
+					]
+				},
+				"servicecheckurl":"/LSIP/restservices/servicecheck/oamp_checkTomcatAvailable/query",
+				"servicecheckpar":"{\"service\":\"timeservice\",\"version\":\"1.0.0\"}",
+				"projectpath": "/usr/longrise/LEAP/LESP",
+				"tomcatstartscriptpath":"tomcatstartscriptpath",
+				"tomcatkillscriptpath":"tomcatkillscriptpath",
+				"tomcatresourceupdatescriptpath":"tomcatresourceupdatescriptpath",
+				"upstreamname": "LESP",
+				"nginxconfpath": "G:\\python_work\\project-auto-update\\func\\files\\nginx.conf",
+				"nginxreloadcmd": "/usr/local/nginx/sbin/nginx -s reload",
+				"nginxreplacestarttag":"###NGINXREPLACE###START###LESP###",
+				"nginxreplaceendtag":"###NGINXREPLACE###END###LESP###",
+				"nginxrootstarttag":"###NGINXREPLACE###ROOTSTART###LESP###",
+				"nginxrootendtag":"###NGINXREPLACE###ROOTSTART###LESP###",
+				"nginxrootconf":"xxxxxxxxxxxxxxxxxxx"
+			},
+			"groupbackup": {
+				"tomcatgroupinfo": {
+					"tomcatprojectxmlpath": "./conf/Catalina/localhost",
+					"tomcatgrouppath": "/usr/local/tomcatgroup/",
+					"tomcats": [
+						{
+                            "tomcattag":"7",
+							"name": "07",
+							"upstreamip": "127.0.0.1",
+                            "serviceip":"220.231.252.72",
+							"port": "64001",
+							"upstreamweight": "1"
+						},
+						{
+                            "tomcattag":"8",
+							"name": "08",
+							"upstreamip": "127.0.0.1",
+                            "serviceip":"220.231.252.72",
+							"port": "64002",
+							"upstreamweight": "1"
+						}
+					]
+				},
+				"servicecheckurl":"/LSIP/restservices/servicecheck/oamp_checkTomcatAvailable/query",
+				"servicecheckpar":"{\"service\":\"timeservice\",\"version\":\"1.0.0\"}",
+				"projectpath": "/usr/longrise/YXYBBINDEX",
+				"tomcatstartscriptpath":"tomcatstartscriptpath",
+				"tomcatkillscriptpath":"tomcatkillscriptpath",
+				"tomcatresourceupdatescriptpath":"tomcatresourceupdatescriptpath",
+				"upstreamname": "LESP",
+				"nginxconfpath": "G:\\python_work\\project-auto-update\\func\\files\\nginx.conf",
+				"nginxreloadcmd": "/usr/local/nginx/sbin/nginx -s reload",
+				"nginxreplacestarttag":"###NGINXREPLACE###START###LESP###",
+				"nginxreplaceendtag":"###NGINXREPLACE###END###LESP###",
+				"nginxrootstarttag":"###NGINXREPLACE###ROOTSTART###LESP###",
+				"nginxrootendtag":"###NGINXREPLACE###ROOTSTART###LESP###",
+				"nginxrootconf":"xxxxxxxxxxxxxxxxxxx"
+			}
+		}
+	}
+}

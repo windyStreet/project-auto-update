@@ -1,0 +1,28 @@
+{
+  "SMTP":{
+    "name":"smtp.longrise.com.cn",
+    "port":"25"
+  }
+  "sender":[
+    {
+      "name":"",
+      "email":"yaogc@longrise.com.cn"
+    },
+    {
+      "name":"",
+      "email":""
+    }
+  ],
+  "receiver":[
+    {
+      "name":"",
+      "email":"yaogc@longrise.com.cn",
+      "level":""
+    },
+    {
+      "name":"",
+      "email":"",
+      "level":""
+    }
+  ]
+}
