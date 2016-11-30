@@ -30,6 +30,7 @@ class ProjectUpdate(object):
         self.tomcatResourceUpdateScriptPath=None
         self.updateType="update"#更新类型 “update” “rollback”
         self.updateTime="19700101"
+        self.deploymentmode="double"#部署方式double(全组启动方式),single（单项目启动方式）,onehalf（半启动方式），默认采用全组启动方式
 
     # 读取配置文件
     def readConfig(self):
@@ -39,6 +40,7 @@ class ProjectUpdate(object):
             FormatPrint.printDebug("当前配置文件信息为:"+str(self.conf_JSON))
             if self.projectName in self.conf_JSON["projectname"].keys():
                 self.projectConf_JSON=self.conf_JSON["projectname"][self.projectName]
+                self.deploymentmode=self.conf_JSON["projectname"][self.projectName]["deploymentmode"]
                 FormatPrint.printDebug("当前操作项目的配置文件信息为:" + str(self.projectConf_JSON))
             else:
                 FormatPrint.printFalat("不存在"+str(self.projectName)+"项目配置信息,中断更新")
@@ -445,6 +447,11 @@ def projectUpdate(projectName,projectUpdateVersion,updateType,updateTime):
     pu.projectUpdateVersion= projectUpdateVersion
     pu.updateTime=updateTime
     pu.readConfig();  # 读取配置文件信息
+    #(全组启动方式), （单项目启动方式）, （半启动方式），默认采用全组启动方式
+    #self.deploymentmode = self.self.conf_JSON["projectname"][self.projectName]["deploymentmode"]
+    if pu.deploymentmode == None or pu.deploymentmode not in ["double","single","onehalf"]:
+        FormatPrint.printFalat("配置文件deploymentmode未配置")
+        exit(-1)
 
     if pu.checkRuntimeStateConf():
         pass
@@ -457,7 +464,9 @@ def projectUpdate(projectName,projectUpdateVersion,updateType,updateTime):
     FormatPrint.printDebug("当前nginx运行信息:"+str(pu.crurentProjectRunNginxGroup_JSON))
     FormatPrint.printDebug("当前运行的组为:"+str(pu.runGroup))
 
-    if pu.runGroup == 'groupmaster':
+    if pu.deploymentmode == 'single':
+        pu.willBeUpdatedGroup = 'groupmaster'
+    elif pu.runGroup == 'groupmaster':
         pu.willBeUpdatedGroup='groupbackup'
     else:
         pu.willBeUpdatedGroup='groupmaster'
