@@ -16,3 +16,4 @@ def printDebug(object):
 #格式化fatal输出
 def printFalat(object):
     print("[FALAT]" + time.strftime('%Y-%m-%d %H:%M:%S') + "  " + str(object))
+    exit(-1)
