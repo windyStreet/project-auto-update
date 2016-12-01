@@ -1,0 +1,22 @@
+{
+    "1": {
+        "status": "n/a", 
+        "health-check-url": "http://220.231.252.72:64001/LSIP/restservices/servicecheck/oamp_checkTomcatAvailable/query", 
+        "last-response-data": "n/a", 
+        "last-response-time": 0, 
+        "fail-count": 0, 
+        "last-check-time": "2016-12-01 16:37:09", 
+        "health-check-data": "{\"service\":\"timeservice\",\"version\":\"1.0.0\"}"
+    }, 
+    "2": {
+        "status": "n/a", 
+        "health-check-url": "http://220.231.252.72:64002/LSIP/restservices/servicecheck/oamp_checkTomcatAvailable/query", 
+        "last-response-data": "n/a", 
+        "last-response-time": 0, 
+        "fail-count": 0, 
+        "last-check-time": "2016-12-01 16:37:09", 
+        "health-check-data": "{\"service\":\"timeservice\",\"version\":\"1.0.0\"}"
+    }, 
+    "currentrun": "groupmaster", 
+    "deploymentmode": "single"
+}
