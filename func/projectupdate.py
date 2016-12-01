@@ -23,6 +23,7 @@ class ProjectUpdate(object):
         self.updateType=None
         self.deploymentmode=None
         self.tomcatConf=None
+        self.hostInfostr=None
 
 def projectUpdate(projectName,updateVersion,updateType,updateTime):
     pu=ProjectUpdate()
@@ -30,6 +31,7 @@ def projectUpdate(projectName,updateVersion,updateType,updateTime):
     pu.updateVersion=updateVersion
     pu.updateType=updateType
     pu.updateTime=updateTime
+
     #A、关闭健康检查服务
     if HealthCheck.stopHealthCheck():
         pass
@@ -42,6 +44,7 @@ def projectUpdate(projectName,updateVersion,updateType,updateTime):
     if pu.projectName not in pu.tomcatConf['projectname']:
         FormatPrint.printFalat(str(pu.projectName)+' not configure in the tomcat-conf.json')
     pu.deploymentmode=pu.tomcatConf['projectname'][projectName]['deploymentmode']
+    pu.hostInfostr=str(pu.tomcatConf['hostname'])+":"+str(pu.tomcatConf['serverip'])
     ##################调用服务
     if pu.deploymentmode == 'single':
         FormatPrint.printDebug("curent project is single deploymentmode")
