@@ -76,7 +76,7 @@ class __projectupdate_single(object):
             FormatPrint.printInfo("replace resource fail ")
             return False
 
-    #重启当前tomcat
+    #重启当前tomcat组
     def restartCurrentTomcats(self):
         if len(self.willBeRestartTomcats) == 0:
             FormatPrint.printError(" no tomcat is able to restart ")
@@ -115,7 +115,7 @@ def process(projectJson):
     #替换资源
     if __pus.replceResource():
         if __pus.restartCurrentTomcats():
-            if __checkServiceIsOK.checkServiceIsOk(__pus.willBeRestartTomcats,__pus.projectName,__pus.tomcatmaxrestattime,__pus.endUpdateWaiteMaxTime, __pus.tomcatkillscriptpath,__pus.hostInfostr):
+            if len(__checkServiceIsOK.checkServiceIsOk(__pus.willBeRestartTomcats,__pus.projectName,__pus.tomcatmaxrestattime,__pus.endUpdateWaiteMaxTime, __pus.tomcatkillscriptpath,__pus.hostInfostr)) > 0 :
                 FormatPrint.printInfo(" update finish ")
             else:
                 FormatPrint.printFalat(" service is not available ")
