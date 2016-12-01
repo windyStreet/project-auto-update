@@ -1,0 +1,8 @@
+nohup: ignoring input
+Traceback (most recent call last):
+  File "C:/Users/Administrator/PycharmProjects/project-auto-update/func/Controler.py", line 4, in <module>
+    import projectupdate
+  File "C:\Users\Administrator\PycharmProjects\project-auto-update\func\projectupdate.py", line 7, in <module>
+    import urllib2
+ImportError: No module named 'urllib2'
+2016-12-01 09:43:38启动healthcheck服务......
