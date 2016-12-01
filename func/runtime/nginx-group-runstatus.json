@@ -1,0 +1,26 @@
+{
+    "projectname": {
+        "YXYBB": {
+            "groupmaster": {
+                "lastmodify": "2016-11-30 15:23:34", 
+                "modifytimes": "1"
+            }, 
+            "groupbackup": {
+                "lastmodify": "2016-11-30 15:23:34", 
+                "modifytimes": "0"
+            }, 
+            "currentrun": "groupmaster"
+        }, 
+        "LESP": {
+            "groupmaster": {
+                "lastmodify": "2016-11-30 15:23:34", 
+                "modifytimes": "1"
+            }, 
+            "groupbackup": {
+                "lastmodify": "2016-11-30 15:23:34", 
+                "modifytimes": "0"
+            }, 
+            "currentrun": "groupmaster"
+        }
+    }
+}
