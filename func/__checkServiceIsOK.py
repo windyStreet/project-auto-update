@@ -31,8 +31,8 @@ def checkServiceIsOk(restartTomcats,projectName,maxTime,endTime,tomcatKillScript
                     TomcatFunc.killTomcat(tomcatKillScriptPath, failTocmatTag)
             break
         if intervalTime > float(endTime):
-            FormatPrint.printInfo("在最大重启时间内，未发现已经完成启动的tomcat，终止更新")
-            return False
+            FormatPrint.printFalat("在最大重启时间内，未发现已经完成启动的tomcat，终止更新")
+            return sucessRestartTomcats
         delList=[]
         for tomcatTag in restartTomcats:
             checkUrl=nodeHealthStatus[tomcatTag]['health-check-url']
@@ -65,4 +65,4 @@ def checkServiceIsOk(restartTomcats,projectName,maxTime,endTime,tomcatKillScript
         time.sleep(3)
         # delList.clear()
         del delList[:]
-    return True
+    return sucessRestartTomcats
