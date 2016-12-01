@@ -35,7 +35,6 @@ def projectUpdate(projectName,updateVersion,updateType,updateTime):
         pass
     else:
         FormatPrint.printFalat("stopHealthCheck is wrong")
-
     tomcatPath=sys.path[0] + os.sep + 'conf' + os.sep + 'tomcat-conf.json'
     pu.tomcatConf = JsonFileFunc.readFile(tomcatPath)
     if pu.tomcatConf is None:
