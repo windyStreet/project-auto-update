@@ -13,7 +13,6 @@
 					"tomcats": [
 						{
                             "tomcattag":"1",
-							"name": "01",
 							"upstreamip": "127.0.0.1",
                             "serviceip":"220.231.252.72",
 							"port": "64001",
@@ -21,7 +20,6 @@
 						},
 						{
                             "tomcattag":"2",
-							"name": "02",
 							"upstreamip": "127.0.0.1",
                             "serviceip":"220.231.252.72",
 							"port": "64002",
@@ -51,7 +49,6 @@
 					"tomcats": [
 						{
                             "tomcattag":"5",
-							"name": "05",
 							"upstreamip": "127.0.0.1",
                             "serviceip":"220.231.252.72",
 							"port": "64001",
@@ -91,7 +88,6 @@
 					"tomcats": [
 						{
                             "tomcattag":"3",
-							"name": "03",
 							"upstreamip": "0.0.0.1",
                             "serviceip":"220.231.252.72",
 							"port": "64003",
@@ -99,7 +95,6 @@
 						},
 						{
                             "tomcattag":"4",
-							"name": "04",
 							"upstreamip": "0.0.0.1",
                             "serviceip":"220.231.252.72",
 							"port": "64005",
@@ -129,7 +124,6 @@
 					"tomcats": [
 						{
                             "tomcattag":"7",
-							"name": "07",
 							"upstreamip": "127.0.0.1",
                             "serviceip":"220.231.252.72",
 							"port": "64001",
@@ -137,7 +131,6 @@
 						},
 						{
                             "tomcattag":"8",
-							"name": "08",
 							"upstreamip": "127.0.0.1",
                             "serviceip":"220.231.252.72",
 							"port": "64002",
