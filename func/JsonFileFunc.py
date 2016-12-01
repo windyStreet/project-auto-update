@@ -12,8 +12,17 @@ class __jsonFileFunc(object):
 def readFile(fielPath):
 	jsonData=None
 	try:
-		with open(fielPath, 'r') as tomcat_conf:
-			jsonData = json.load(tomcat_conf)
+		with open(fielPath, 'r') as file:
+			jsonData = json.load(file)
 	except Exception as e:
-		FormatPrint.printError('read'+str(fielPath)+'no exists')
+		FormatPrint.printError('read [ '+str(fielPath)+' ] not exists')
 	return jsonData
+
+#create json File
+def createFile(fielPath,data):
+	try:
+		with open(fielPath, 'w') as file:
+			file.write(json.dumps(data, indent=4))
+	except Exception as e:
+		FormatPrint.printFalat('create '+str(fielPath)+' fail')
+
