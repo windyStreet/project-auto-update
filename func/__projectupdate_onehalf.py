@@ -18,7 +18,7 @@ def process(projectJson):
 '''
     A、关闭健康检查服务
     B、读取配置文件
-    C、初始化tomcatgrup-runstatus文件以及nginxgroup-runstatus文件
+    C、初始化node-health-status文件
         i:single模式需要初始化全部的tomcat信息，master以及backup两组的tomcat信息
     D、替换资源
     E、重启tomcat

@@ -21,14 +21,9 @@ time=None
 
 #项目更新
 def update():
-    FormatPrint.printDebug("update")
     FormatPrint.printInfo("更新项目" + str(projectName) + "更新版本" + str(projectVersion))
-    #关闭健康检查服务
-    stopHealthCheck()
     #更新项目
     projectupdate.projectUpdate(projectName, projectVersion,"update",time)
-    #启动健康检查服务
-    startHealthCheck()
 
 #项目回滚
 def rollBack():

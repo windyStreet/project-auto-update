@@ -9,10 +9,11 @@ import socket
 import FormatPrint
 import TomcatFunc
 import NginxFunc
-import __jsonFileFunc
+import JsonFileFunc
 import __projectupdate_double
 import __projectupdate_onehalf
 import __projectupdate_single
+import HealthCheck
 
 class ProjectUpdate(object):
     def __init__(self):
@@ -29,25 +30,37 @@ def projectUpdate(projectName,updateVersion,updateType,updateTime):
     pu.updateVersion=updateVersion
     pu.updateType=updateType
     pu.updateTime=updateTime
+    #A、关闭健康检查服务
+    if HealthCheck.stopHealthCheck():
+        pass
+    else:
+        FormatPrint.printFalat("stopHealthCheck is wrong")
+
     tomcatPath=sys.path[0] + os.sep + 'conf' + os.sep + 'tomcat-conf.json'
-    pu.tomcatConf = __jsonFileFunc.readFile(tomcatPath)
+    pu.tomcatConf = JsonFileFunc.readFile(tomcatPath)
     if pu.tomcatConf is None:
         FormatPrint.printFalat('can not read tomcat-conf configure')
     if pu.projectName not in pu.tomcatConf['projectname']:
         FormatPrint.printFalat(str(pu.projectName)+' not configure in the tomcat-conf.json')
     pu.deploymentmode=pu.tomcatConf['projectname'][projectName]['deploymentmode']
-
+    ##################调用服务
     if pu.deploymentmode == 'single':
-        print('')
+        FormatPrint.printDebug("curent project is single deploymentmode")
         __projectupdate_single.process(pu)
     elif pu.deploymentmode =='onehalf':
-        print('')
+        FormatPrint.printDebug("curent project is single onehalf")
         __projectupdate_onehalf.process(pu)
     elif pu.deploymentmode == 'double':
-        print('')
+        FormatPrint.printDebug("curent project is single deploymentmode")
         __projectupdate_double.process(pu)
     else:
         FormatPrint.printFalat(str(pu.projectName)+'project configure wrong deploymentmode ')
+
+    #F、启动健康检查服务
+    if HealthCheck.startHealthCheck():
+        pass
+    else:
+        FormatPrint.printFalat("startHealthCheck is wrong")
 
 '''
 1、如果是single模式
