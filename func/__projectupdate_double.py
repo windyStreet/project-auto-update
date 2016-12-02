@@ -12,6 +12,7 @@ import NginxFunc
 import RungroupFunc
 import __checkServiceIsOK
 import JsonFileFunc
+import NodeRunStatusFunc
 
 class __projectupdate_double(object):
     def __init__(self):
@@ -30,7 +31,7 @@ class __projectupdate_double(object):
         self.willBeRestartTomcats = []
         self.tomcatstartscriptpath = None
         self.tomcatkillscriptpath = None
-        self.sucessRestartTomcatsTag = []
+        self.sucessRestartTomcatTags = []
 
     #项目资源替换
     def replceResource(self):
@@ -65,10 +66,10 @@ class __projectupdate_double(object):
     def modifyNodeHealthStatus(self):
         nodeHealthStatusFile = sys.path[0] + os.sep + 'runtime' + os.sep + str(self.projectName)+'-node-health-status.json'
         if JsonFileFunc.readFile(nodeHealthStatusFile) == None:
-            self.initNodeHealthStatusFile()
+            NodeRunStatusFunc.initNodeHealthStatus(self)
             return True
         else:
-            self.modifNodeHealthStatusFile()
+            NodeRunStatusFunc.modifyNodeHealthStatus(self)
             return True
 
     #删除 upstream-status 文件
@@ -96,9 +97,7 @@ class __projectupdate_double(object):
 #功能实现函数
 def process(projectJson):
     __pud=__projectupdate_double()
-    __pud.projectJson=projectJson
-
-    __pud.projectJson=projectJson
+    __pud.projectJson = projectJson
     __pud.endUpdateWaiteMaxTime=projectJson.tomcatConf['endUpdateWaiteMaxTime']
     __pud.tomcatmaxrestattime=projectJson.tomcatConf['tomcatmaxrestattime']
     __pud.currentProjectConf=projectJson.tomcatConf['projectname'][projectJson.projectName]
@@ -117,12 +116,13 @@ def process(projectJson):
     else:
         FormatPrint.printFalat(" can not get the will update group , please check config ")
 
-    __pud.willBeRestartTomcats=__pud.currentProjectConf[__pud.willUpdateGroup]['tomcats']
+    __pud.willBeRestartTomcats = __pud.currentProjectConf[__pud.willUpdateGroup]['tomcats']
     # 替换资源
     if __pud.replceResource():
         if __pud.restartCurrentTomcats():
-            __pud.sucessRestartTomcatsTag = __checkServiceIsOK.checkServiceIsOk(__pud.willBeRestartTomcats, __pud.projectName,__pud.tomcatmaxrestattime, __pud.endUpdateWaiteMaxTime,__pud.tomcatkillscriptpath, __pud.hostInfostr)
-            if len(__pud.sucessRestartTomcatsTag) > 0 :
+            __pud.sucessRestartTomcatTags = __checkServiceIsOK.checkServiceIsOk(__pud.willBeRestartTomcats, __pud.projectName,__pud.tomcatmaxrestattime, __pud.endUpdateWaiteMaxTime,__pud.tomcatkillscriptpath, __pud.hostInfostr)
+            NginxFunc.changeNginxConf(__pud)
+            if len(__pud.sucessRestartTomcatTags) > 0 :
                 if __pud.modifyRuntimeStatus():
                     FormatPrint.printInfo(" update finish ")
                 else:
@@ -132,14 +132,13 @@ def process(projectJson):
         else:
             FormatPrint.printFalat(" restart tomcat fail ")
     else:
-        format(" replace resource fail ")
+        FormatPrint.printFalat(" replace resource fail ")
 
     # 初始化运行时文件
     __pud.initNodeHealthStatus()
 '''
     A、关闭健康检查服务
     B、读取配置文件
-
         1、判断当前运行组
         D、替换资源
         2、替换将被更新组配置的项目
