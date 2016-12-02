@@ -57,7 +57,7 @@ def changeNginxConf(pu):
     #3、reloadNginx()
 
     projecName=pu.projecName
-    tomcat_conf = pu.projectJson
+    tomcat_conf = pu.projectJson.tomcatConf
     tomcatGroup = pu.willUpdateGroup
     tomcatTags = pu.sucessRestartTomcatTags
 
