@@ -12,36 +12,49 @@ import JsonFileFunc
 
 # 检查服务是否可用
 # 检查tomcat服务是否可用
-def checkServiceIsOk(restartTomcats,projectName,maxTime,endTime,tomcatKillScriptPath,hostinfostr):
-    socket.setdefaulttimeout(5)
-    nodeHealthStatusFile = sys.path[0] + os.sep + 'runtime' + os.sep + str(projectName) +'-node-health-status.json'
-    nodeHealthStatus= JsonFileFunc.readFile(nodeHealthStatusFile)
+def checkServiceIsOk(pu):
+    projectName = pu.projectName
+    restartTomcats = list(pu.willBeRestartTomcats)
+    maxTime = pu.tomcatmaxrestattime
+    endTime = pu.endUpdateWaiteMaxTime
+    tomcatKillScriptPath = pu.tomcatkillscriptpath
+    hostinfostr = pu.hostInfostr
+    tomcat_conf = pu.projectJson.tomcatConf
+    willUpdateGroup = pu.willUpdateGroup
+    healCheckUrl = tomcat_conf['projectname'][projectName][willUpdateGroup]['servicecheckurl']
+    checkData = tomcat_conf['projectname'][projectName][willUpdateGroup]['servicecheckpar']
 
-    sucessRestartTomcats=[]
+    socket.setdefaulttimeout(5)
+
+    sucessRestartTomcattags=[]
     tomcatStartTime = time.time()
+
+    restartTomcatTagDict={}
+    for tomcatInfo in restartTomcats:
+        restartTomcatTagDict[tomcatInfo['tomcattag']]=tomcatInfo
+
     while True:
         intervalTime = time.time() - tomcatStartTime
         FormatPrint.printInfo("tomcat重启，服务检查耗时:" + str(intervalTime))
-        if len(restartTomcats) == 0 or (intervalTime > float(maxTime) and len(sucessRestartTomcats) > 0):
-            for tomcatTag in sucessRestartTomcats:
+        if len(restartTomcatTagDict) == 0 or (intervalTime > float(maxTime) and len(sucessRestartTomcattags) > 0):
+            for tomcatTag in sucessRestartTomcattags:
                 FormatPrint.printInfo("tomcat" + str(tomcatTag) + "启动成功")
             # 记得关闭未启动成功的tocmat
-            if len(restartTomcats) > 0:
-                for failTocmatTag in restartTomcats:
+            if len(restartTomcatTagDict) > 0:
+                for failTocmatTag in restartTomcatTagDict:
                     TomcatFunc.killTomcat(tomcatKillScriptPath, failTocmatTag)
             break
         if intervalTime > float(endTime):
             FormatPrint.printFalat("在最大重启时间内，未发现已经完成启动的tomcat，终止更新")
-            return sucessRestartTomcats
-        delList=[]
-        for tomcatTag in restartTomcats:
-            checkUrl=nodeHealthStatus[tomcatTag]['health-check-url']
-            checkData=nodeHealthStatus[tomcatTag]['health-check-data']
+            return sucessRestartTomcattags
+        deltomcatTags=[]
+        for tomcatTag in restartTomcatTagDict.keys():
+            tomcat = restartTomcatTagDict[tomcatTag]
+            checkUrl = "http://" + tomcat["serviceip"] + ":" + tomcat["port"] +str(healCheckUrl)
             try:
                 response = urllib2.urlopen(checkUrl, checkData)
                 ret_data = response.read()
                 ret_code = response.code
-
                 response.close()
                 if isinstance(ret_data, bytes):
                     ret_data = bytes.decode(ret_data)
@@ -49,20 +62,17 @@ def checkServiceIsOk(restartTomcats,projectName,maxTime,endTime,tomcatKillScript
                 if ret_data["status"] == 1 and ret_code == 200:
                     FormatPrint.printInfo("####################################################################")
                     FormatPrint.printInfo("tomcat更新记录如下:")
-                    FormatPrint.printInfo(hostinfostr+"_"+str(projectName)+"项目，tomcat"+tomcatTag+"更新成功")
+                    FormatPrint.printInfo(str(hostinfostr)+"_"+str(projectName)+"项目，tomcat"+str(tomcatTag)+"更新成功")
                     FormatPrint.printInfo("开始更新时间:" + str(tomcatStartTime))
                     FormatPrint.printInfo("更新结束时间:" + time.strftime('%Y-%m-%d %H:%M:%S'))
                     FormatPrint.printInfo("####################################################################")
-                    # 更新成功，将tomcat的标识加入到delList中
-                    delList.append(tomcatTag)
-                    sucessRestartTomcats.append(tomcatTag)
+                    sucessRestartTomcattags.append(tomcatTag)
+                    deltomcatTags.append(tomcatTag)
             except Exception as e:
-                FormatPrint.printWarn(hostinfostr+"_" + str(projectName) +"tomcat" +tomcatTag + "更新异常:" + str(e))
-        if (len(delList) > 0):
-            # 删除delList中的tomcat标识，这些tomcat已经更新完成
-            for deltag in delList:
-                del restartTomcats[deltag]
+                FormatPrint.printWarn(str(hostinfostr)+"_" + str(projectName) +"tomcat" +str(tomcatTag) + "更新异常:" + str(e))
+        if (len(deltomcatTags) > 0):
+            for deltag in deltomcatTags:
+                del restartTomcatTagDict[deltag]
         time.sleep(3)
-        # delList.clear()
-        del delList[:]
-    return sucessRestartTomcats
+        del deltomcatTags[:]
+    return sucessRestartTomcattags
