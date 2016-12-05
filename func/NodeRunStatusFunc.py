@@ -39,7 +39,7 @@ class NodeRunStatusFunc(object):
 初始化node-health-status
 '''
 def initNodeHealthStatus(pu,groups):
-    projecName = pu.projectName
+    projectName = pu.projectName
     deploymentmode = pu.deploymentmode
     tomcatGroup = pu.willUpdateGroup
     currentRunGroup = pu.willUpdateGroup
@@ -47,13 +47,29 @@ def initNodeHealthStatus(pu,groups):
     tomcat_conf = pu.projectJson.tomcatConf
     tomcatTags = []
     for group in groups:
-        tomcatTags.append(tomcat_conf['projectname'][projecName][group]['tomcats'])
-    servicecheckurl = tomcat_conf['projectname'][projecName][tomcatGroup]['servicecheckurl']
-    servicecheckpar = tomcat_conf['projectname'][projecName][tomcatGroup]['servicecheckpar']
+        tomcatTags.append(tomcat_conf['projectname'][projectName][group]['tomcats'])
+    servicecheckurl = tomcat_conf['projectname'][projectName][tomcatGroup]['servicecheckurl']
+    servicecheckpar = tomcat_conf['projectname'][projectName][tomcatGroup]['servicecheckpar']
+
+    upstreamName = tomcat_conf['projectname'][projectName][tomcatGroup]['upstreamname']
+    nginxConfPath = tomcat_conf['projectname'][projectName][tomcatGroup]['nginxconfpath']
+    nginxreloadcmd = tomcat_conf['projectname'][projectName][tomcatGroup]['nginxreloadcmd']
+    nginxreplacestarttag = tomcat_conf['projectname'][projectName][tomcatGroup]['nginxreplacestarttag']
+    nginxreplaceendtag = tomcat_conf['projectname'][projectName][tomcatGroup]['nginxreplaceendtag']
+    nginxrootstarttag = tomcat_conf['projectname'][projectName][tomcatGroup]['nginxrootstarttag']
+    nginxrootendtag = tomcat_conf['projectname'][projectName][tomcatGroup]['nginxrootendtag']
+    nginxrootconf = tomcat_conf['projectname'][projectName][tomcatGroup]['nginxrootconf']
 
     node_health_status = {}
     node_health_status['currentrun'] = currentRunGroup
-    node_health_status['deploymentmode'] = deploymentmode
+    node_health_status['upstreamName'] = upstreamName
+    node_health_status['nginxConfPath'] = nginxConfPath
+    node_health_status['nginxreloadcmd'] = nginxreloadcmd
+    node_health_status['nginxreplacestarttag'] = nginxreplacestarttag
+    node_health_status['nginxreplaceendtag'] = nginxreplaceendtag
+    node_health_status['nginxrootstarttag'] = nginxrootstarttag
+    node_health_status['nginxrootendtag'] = nginxrootendtag
+    node_health_status['nginxrootconf'] = nginxrootconf
 
     for tomcat in tomcatTags:
         node_name = tomcat['tomcattag']
@@ -67,7 +83,7 @@ def initNodeHealthStatus(pu,groups):
             'fail-count': 0,
             'last-check-time': time.strftime('%Y-%m-%d %H:%M:%S')
         }
-    path = sys.path[0] + os.sep + 'runtime' + os.sep + str(projecName) +'-node-health-status.json'
+    path = sys.path[0] + os.sep + 'runtime' + os.sep + str(projectName) +'-node-health-status.json'
     JsonFileFunc.createFile(path, node_health_status)
     return True
 
