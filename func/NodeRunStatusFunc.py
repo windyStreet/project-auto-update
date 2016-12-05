@@ -2,7 +2,10 @@
 #!-*- coding:utf-8 -*-
 
 import time
-import  FormatPrint
+import FormatPrint
+import JsonFileFunc
+import sys
+import os
 class NodeRunStatusFunc(object):
     def __init__(self):
         pass
@@ -30,16 +33,23 @@ class NodeRunStatusFunc(object):
     "currentrun": "groupmaster",
     "deploymentmode": "single"
 '''
+
 #init node-health-status file
-def initNodeHealthStatus(pu):
+'''
+初始化node-health-status
+'''
+def initNodeHealthStatus(pu,groups):
     projecName = pu.projectName
-    tomcat_conf = pu.projectJson.tomcatConf
-    tomcatGroup = pu.willUpdateGroup
     deploymentmode = pu.deploymentmode
-    tomcatTags = tomcat_conf['projectname'][projecName][tomcatGroup]['tomcats']
+    tomcatGroup = pu.willUpdateGroup
+    currentRunGroup = pu.willUpdateGroup
+
+    tomcat_conf = pu.projectJson.tomcatConf
+    tomcatTags = []
+    for group in groups:
+        tomcatTags.append(tomcat_conf['projectname'][projecName][group]['tomcats'])
     servicecheckurl = tomcat_conf['projectname'][projecName][tomcatGroup]['servicecheckurl']
     servicecheckpar = tomcat_conf['projectname'][projecName][tomcatGroup]['servicecheckpar']
-    currentRunGroup = pu.willUpdateGroup()
 
     node_health_status = {}
     node_health_status['currentrun'] = currentRunGroup
@@ -57,14 +67,21 @@ def initNodeHealthStatus(pu):
             'fail-count': 0,
             'last-check-time': time.strftime('%Y-%m-%d %H:%M:%S')
         }
-    return node_health_status
+    path = sys.path[0] + os.sep + 'runtime' + os.sep + str(projecName) +'-node-health-status.json'
+    JsonFileFunc.createFile(path, node_health_status)
+    return True
 
 # modify node-health-status file
+'''
+修改nodehealthstatus 文件内容
+注：修改过程为每次重新初始化该文件（避免修改过程过程比较繁琐），且在onehalf模式中存在不同组中的数据进行组合问题
+'''
 def modifyNodeHealthStatus(pu):
     projecName = pu.projectName
-    tomcat_conf = pu.projectJson.tomcatConf
-    tomcatGroup = pu.willUpdateGroup
     deploymentmode = pu.deploymentmode
+    tomcatGroup = pu.willUpdateGroup
+
+    tomcat_conf = pu.projectJson.tomcatConf
     tomcatTags = tomcat_conf['projectname'][projecName][tomcatGroup]['tomcatgroupinfo']['tomcats']
     servicecheckurl = tomcat_conf['projectname'][projecName][tomcatGroup]['servicecheckurl']
     servicecheckpar = tomcat_conf['projectname'][projecName][tomcatGroup]['servicecheckpar']
