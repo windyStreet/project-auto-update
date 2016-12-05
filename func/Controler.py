@@ -3,9 +3,6 @@
 
 import projectupdate
 import FormatPrint
-import TomcatFunc
-import nodeshealthcheck
-import nginxupstreamedit
 import getopt
 import sys
 import TomcatFunc
