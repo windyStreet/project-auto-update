@@ -25,6 +25,7 @@ class __projectupdate_single(object):
         self.tomcatkillscriptpath=None
 
 '''
+    备注:在主程序中仅进行变量控制
     A、关闭健康检查服务
         B、读取配置文件
         C、初始化node-health-status文件
