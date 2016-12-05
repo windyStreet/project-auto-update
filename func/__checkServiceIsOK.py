@@ -1,31 +1,32 @@
 #!/usr/bin/env python
 #!-*- coding:utf-8 -*-
-import sys
-import os
 import FormatPrint
 import socket
 import time
 import TomcatFunc
 import urllib2
 import json
-import JsonFileFunc
 
-# 检查服务是否可用
-# 检查tomcat服务是否可用
+'''
+检查tomcat服务是否可用
+par:pu
+return:sucess service tomcatTags
+'''
 def checkServiceIsOk(pu):
+
     projectName = pu.projectName
-    restartTomcats = list(pu.willBeRestartTomcats)
-    maxTime = pu.tomcatmaxrestattime
-    endTime = pu.endUpdateWaiteMaxTime
     tomcatKillScriptPath = pu.tomcatkillscriptpath
-    hostinfostr = pu.hostInfostr
-    tomcat_conf = pu.projectJson.tomcatConf
     willUpdateGroup = pu.willUpdateGroup
+    hostinfostr = pu.hostInfostr
+
+    tomcat_conf = pu.projectJson.tomcatConf
+    maxTime = tomcat_conf['endUpdateWaiteMaxTime']
+    endTime = tomcat_conf['tomcatmaxrestattime']
+    restartTomcats = tomcat_conf['projectname'][projectName][willUpdateGroup]['tomcatgroupinfo']['tomcats']
     healCheckUrl = tomcat_conf['projectname'][projectName][willUpdateGroup]['servicecheckurl']
     checkData = tomcat_conf['projectname'][projectName][willUpdateGroup]['servicecheckpar']
 
     socket.setdefaulttimeout(5)
-
     sucessRestartTomcattags=[]
     tomcatStartTime = time.time()
 
@@ -74,5 +75,6 @@ def checkServiceIsOk(pu):
             for deltag in deltomcatTags:
                 del restartTomcatTagDict[deltag]
         time.sleep(3)
+        #清空deltomcatTags 临时变量
         del deltomcatTags[:]
     return sucessRestartTomcattags
