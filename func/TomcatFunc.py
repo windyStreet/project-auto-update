@@ -64,8 +64,11 @@ def restartTomcats(tomcatStartScriptPath,tomcatKillScriptPath,tomcatTags=None):
     FormatPrint.printInfo("重启tomcat"+str(tomcatTags)+"动作完成")
     return True
 
-
-#重启当前tomcat组
+'''
+ 重启当前tomcat组
+ par:pu对象
+ 功能:实现tomcat组重启
+'''
 def restartWillUpdateTomcatGroup(pu):
     if len(pu.willBeRestartTomcats) == 0:
         FormatPrint.printError(" no tomcat is able to restart ")
