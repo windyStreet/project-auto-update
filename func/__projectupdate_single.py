@@ -11,19 +11,12 @@ class __projectupdate_single(object):
     def __init__(self):
         self.hostInfostr=None
         self.projectJson=None
-        self.endUpdateWaiteMaxTime=None
-        self.tomcatmaxrestattime=None
-        self.currentProjectConf=None
         self.projectName = None
         self.updateVersion = None
         self.updateTime = None
         self.updateType = None
         self.deploymentmode = None
-        self.willUpdateGroup="groupmaster"
-        self.willBeRestartTomcats=[]
-        self.tomcatstartscriptpath = None
-        self.tomcatkillscriptpath=None
-
+        self.willUpdateGroup=None
 '''
     备注:在主程序中仅进行变量控制
     A、关闭健康检查服务
@@ -36,24 +29,20 @@ class __projectupdate_single(object):
 '''
 def process(projectJson):
     __pus=__projectupdate_single()
-
     __pus.projectJson=projectJson
-    __pus.endUpdateWaiteMaxTime=projectJson.tomcatConf['endUpdateWaiteMaxTime']
-    __pus.tomcatmaxrestattime=projectJson.tomcatConf['tomcatmaxrestattime']
-    __pus.currentProjectConf=projectJson.tomcatConf['projectname'][projectJson.projectName]
     __pus.hostInfostr =projectJson.hostInfostr
     __pus.projectName=projectJson.projectName
     __pus.updateVersion=projectJson.updateVersion
     __pus.updateTime=projectJson.updateTime
     __pus.updateType=projectJson.updateType
     __pus.deploymentmode=projectJson.deploymentmode
-    __pus.willBeRestartTomcats=projectJson.tomcatConf['projectname'][projectJson.projectName]['groupmaster']['tomcatgroupinfo']['tomcats']
+    __pus.willUpdateGroup = "groupmaster"
 
     #替换资源
     if ResourceFunc.replceResource(__pus):
         if TomcatFunc.restartWillUpdateTomcatGroup(__pus):
             if len(__checkServiceIsOK.checkServiceIsOk(__pus)) > 0 :
-                if NodeRunStatusFunc.modifyNodeHealthStatus(__pus):
+                if NodeRunStatusFunc.initNodeHealthStatus(__pus,__pus.willUpdateGroup):
                     FormatPrint.printInfo(" update finish ")
                 else:
                     FormatPrint.printFalat(" modify ")
