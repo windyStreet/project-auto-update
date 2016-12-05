@@ -3,7 +3,9 @@
 
 import FormatPrint
 import os
-import __projectupdate_double
+import JsonFileFunc
+import sys
+
 class NginxFunc(object):
     def __init__(self):
         pass
@@ -40,7 +42,7 @@ def reloadNginx(cmd):
         return False
 
 #获取upstream lsit 信息
-def getUpstreamList(projecName,tomcat_conf,tomcatGroup,tomcatTags):
+def getUpstreamList(projectName,nodehealthstatus,sucessRestartTomcatTags)
     upstreamList=[]
     tomcats = tomcat_conf['projectname'][projecName][tomcatGroup]['tomcats']
     for tomcatInfo in tomcats:
@@ -51,25 +53,20 @@ def getUpstreamList(projecName,tomcat_conf,tomcatGroup,tomcatTags):
     return upstreamList
 
 #修改nginx配置文件
-def changeNginxConf(pu):
-    #1、获取ng配置文件路径
-    #2、生成需要修改的upstream
-    #3、reloadNginx()
+def changeNginxConf(projectName,sucessRestartTomcatTags):
+    path = sys.path[0] + os.sep + 'runtime' + os.sep + str(projectName) + '-node-health-status.json'
+    nodehealthstatus = JsonFileFunc.readFile(path)
 
-    projecName=pu.projecName
-    tomcat_conf = pu.projectJson.tomcatConf
-    tomcatGroup = pu.willUpdateGroup
-    tomcatTags = pu.sucessRestartTomcatTags
+    upstreamName = nodehealthstatus['upstreamName']
+    nginxConfPath = nodehealthstatus['nginxConfPath']
+    nginxreloadcmd = nodehealthstatus['nginxreloadcmd']
+    nginxreplacestarttag = nodehealthstatus['nginxreplacestarttag']
+    nginxreplaceendtag = nodehealthstatus['nginxreplaceendtag']
+    nginxrootstarttag = nodehealthstatus['nginxrootstarttag']
+    nginxrootendtag = nodehealthstatus['nginxrootendtag']
+    nginxrootconf = nodehealthstatus['nginxrootconf']
 
-    upstreamName = tomcat_conf['projectname'][projecName][tomcatGroup]['upstreamname']
-    nginxConfPath = tomcat_conf['projectname'][projecName][tomcatGroup]['nginxconfpath']
-    nginxreloadcmd = tomcat_conf['projectname'][projecName][tomcatGroup]['nginxreloadcmd']
-    nginxreplacestarttag = tomcat_conf['projectname'][projecName][tomcatGroup]['nginxreplacestarttag']
-    nginxreplaceendtag = tomcat_conf['projectname'][projecName][tomcatGroup]['nginxreplaceendtag']
-    nginxrootstarttag = tomcat_conf['projectname'][projecName][tomcatGroup]['nginxrootstarttag']
-    nginxrootendtag = tomcat_conf['projectname'][projecName][tomcatGroup]['nginxrootendtag']
-    nginxrootconf = tomcat_conf['projectname'][projecName][tomcatGroup]['nginxrootconf']
-    upstreamList=getUpstreamList(projecName,tomcat_conf,tomcatGroup,tomcatTags)
+    upstreamList=getUpstreamList(projectName,nodehealthstatus,sucessRestartTomcatTags)
     FormatPrint.printInfo("tomcat重启完成，修改nginx配置")
     '''
     1、读取配置，读取开始标识和结束标识
