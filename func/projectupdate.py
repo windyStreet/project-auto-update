@@ -105,5 +105,4 @@ def projectUpdate(projectName,updateVersion,updateType,updateTime):
 
 '''
 健康检查服务需要通过运行状态信息来处理
-
 '''
