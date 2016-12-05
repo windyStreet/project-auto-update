@@ -9,10 +9,13 @@ import JsonFileFunc
 class RunGroup(object):
     def __init__(self):
         pass
-
-# 重启tomcat
+'''
+获取当前运行组的名称
+par:projectName
+retunr:currentrungroupname
+'''
 def getRunGroupName(projectName):
-    nodeHealStatusFile=node_health_status_file = sys.path[0] + os.sep + 'runtime' + os.sep + str(projectName) +'-node-health-status.json'
+    nodeHealStatusFile = sys.path[0] + os.sep + 'runtime' + os.sep + str(projectName) +'-node-health-status.json'
     nodeHealStatus = JsonFileFunc.readFile(nodeHealStatusFile)
     if nodeHealStatus == None:
         return "groupmaster"
