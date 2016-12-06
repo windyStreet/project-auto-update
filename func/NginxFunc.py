@@ -42,14 +42,10 @@ def reloadNginx(cmd):
         return False
 
 #获取upstream lsit 信息
-def getUpstreamList(projectName,nodehealthstatus,sucessRestartTomcatTags)
+def getUpstreamList(nodehealthstatus,sucessRestartTomcatTags):
     upstreamList=[]
-    tomcats = tomcat_conf['projectname'][projecName][tomcatGroup]['tomcats']
-    for tomcatInfo in tomcats:
-        for tomcatTag in tomcatTags:
-            if tomcatTag == tomcatInfo['tomcattag']:
-                upstreamStr = 'server ' + tomcatInfo['upstreamip'] + ':' + tomcatInfo["port"] + ' max_fails=5 fail_timeout=60s weight=' + tomcatInfo["upstreamweight"] + ';'
-                upstreamList.append(upstreamStr)
+    for tomcatTag in sucessRestartTomcatTags:
+        upstreamList.append(nodehealthstatus[tomcatTag]['upstream-str'])
     return upstreamList
 
 #修改nginx配置文件
@@ -66,7 +62,8 @@ def changeNginxConf(projectName,sucessRestartTomcatTags):
     nginxrootendtag = nodehealthstatus['nginxrootendtag']
     nginxrootconf = nodehealthstatus['nginxrootconf']
 
-    upstreamList=getUpstreamList(projectName,nodehealthstatus,sucessRestartTomcatTags)
+    upstreamList=getUpstreamList(nodehealthstatus,sucessRestartTomcatTags)
+
     FormatPrint.printInfo("tomcat重启完成，修改nginx配置")
     '''
     1、读取配置，读取开始标识和结束标识
@@ -76,7 +73,7 @@ def changeNginxConf(projectName,sucessRestartTomcatTags):
     '''
     upstream_conf = nginxreplacestarttag + '\n'
     upstream_conf += '\tupstream ' + upstreamName + '\n\t{\n'
-    for upstreamStr in upstreamList :
+    for upstreamStr in upstreamList:
         upstream_conf += '\t\t'+upstreamStr+'\n'
     upstream_conf += '\t}\n'
     upstream_conf = upstream_conf.decode('utf-8')
