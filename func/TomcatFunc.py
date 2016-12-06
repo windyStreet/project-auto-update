@@ -70,16 +70,12 @@ def restartTomcats(tomcatStartScriptPath,tomcatKillScriptPath,tomcatTags=None):
  功能:实现tomcat组重启
 '''
 def restartWillUpdateTomcatGroup(pu):
-    if len(pu.sucessRestartTomcatTags) == 0:
-        FormatPrint.printError(" no tomcat is able to restart ")
-        return False
-    else:
-        tomcat_conf = pu.projectJson.tomcatConf
-        tomcatstartscriptpath =tomcat_conf['projectname'][pu.projectName][pu.willUpdateGroup[0]]['tomcatstartscriptpath']
-        tomcatkillscriptpath = tomcat_conf['projectname'][pu.projectName][pu.willUpdateGroup[0]]['tomcatkillscriptpath']
-        willBeRestartTomcatTags = []
-        willBeRestartTomcats =tomcat_conf['projectname'][pu.projectName][pu.willUpdateGroup[0]]['tomcatgroupinfo']['tomcats']
-        for tomcat in willBeRestartTomcats:
-            willBeRestartTomcatTags = tomcat['tomcattag']
-        return TomcatFunc.restartTomcats(tomcatstartscriptpath,tomcatkillscriptpath,willBeRestartTomcatTags)
+    tomcat_conf = pu.projectJson.tomcatConf
+    tomcatstartscriptpath =tomcat_conf['projectname'][pu.projectName][pu.willUpdateGroup[0]]['tomcatstartscriptpath']
+    tomcatkillscriptpath = tomcat_conf['projectname'][pu.projectName][pu.willUpdateGroup[0]]['tomcatkillscriptpath']
+    willBeRestartTomcatTags = []
+    willBeRestartTomcats =tomcat_conf['projectname'][pu.projectName][pu.willUpdateGroup[0]]['tomcatgroupinfo']['tomcats']
+    for tomcat in willBeRestartTomcats:
+        willBeRestartTomcatTags = tomcat['tomcattag']
+    return TomcatFunc.restartTomcats(tomcatstartscriptpath,tomcatkillscriptpath,willBeRestartTomcatTags)
 
