@@ -24,9 +24,21 @@ class __projectupdate_onehalf(object):
     def setSucessRestartTomcatTags(self):
         if self.willUpdateGroup[0] == 'backupgroup':
             tomcat_conf = self.projectJson.tomcatConf
-            pass
+            tomcats = tomcat_conf['projectname'][self.projectName]['groupmaster']['tomcatgroupinfo']['tomcats']
+            for tomcat in tomcats:
+                self.sucessRestartTomcatTags.append(tomcat['tomcattag'])
         if self.willUpdateGroup[0] == 'mastergroup':
-            pass
+            tomcat_conf = self.projectJson.tomcatConf
+            tomcats = tomcat_conf['projectname'][self.projectName]['backupgroup']['tomcatgroupinfo']['tomcats']
+            for tomcat in tomcats:
+                self.sucessRestartTomcatTags.append(tomcat['tomcattag'])
+
+    #合并两次成共的tomcatTags
+    def getMergeSucessTomcatsTags(self,firstSucessRestartTomcatTags,secondSucessRestartTomcatTags):
+        sucessTomcatTags=[]
+        sucessTomcatTags.append(firstSucessRestartTomcatTags[:])
+        sucessTomcatTags.append(secondSucessRestartTomcatTags[:])
+        return sucessTomcatTags
 
 
 def process(projectJson):
@@ -39,65 +51,46 @@ def process(projectJson):
     __puo.updateType = projectJson.updateType
     __puo.deploymentmode = projectJson.deploymentmode
 
-
-    # currentRunGroup = RungroupFunc.getRunGroupName(__puo.projectName)
-    #
-    #
-    # if currentRunGroup == "mastergroup":
-    #     __puo.willUpdateGroup = "backupgroup"
-    # elif currentRunGroup == "backupgroup":
-    #     __puo.willUpdateGroup = "mastergroup"
-    # else:
-    #     FormatPrint.printFalat(" can not get the will update group , please check config ")
-
     #先进行初始化
+    firstSucessRestartTomcatTags=[]
     __puo.willUpdateGroup.append("mastergroup")
     __puo.willUpdateGroup.append("backupgroup")
     if NodeRunStatusFunc.initNodeHealthStatus(__puo, __puo.willUpdateGroup):
-        pass
+        del __puo.willUpdateGroup[:]#清空设置的将被更新的组
+        __puo.willUpdateGroup.append("backupgroup")#设置将要被更新的组
+        __puo.setSucessRestartTomcatTags()#设置成功更新的组的信息
+        if NginxFunc.changeNginxConf(__puo,__puo.sucessRestartTomcatTags):#修改NG的配置
+            if TomcatFunc.restartWillUpdateTomcatGroup(__puo):#重启将要被更新的组的信息
+                __puo.sucessRestartTomcatTags = __checkServiceIsOK.checkServiceIsOk(__puo)#检查服务是否可用
+                firstSucessRestartTomcatTags=__puo.sucessRestartTomcatTags
+                if len(__puo.sucessRestartTomcatTags) > 0:
+                    if NginxFunc.changeNginxConf(__puo,__puo.sucessRestartTomcatTags):#重新设置NG配置 == 》 第一组跟新完毕,同时进行了切换
+                        #重启第二组
+                        __puo.willUpdateGroup.append("mastergroup")  # 设置将要被更新的组(第二组)
+                        __puo.setSucessRestartTomcatTags()  # 设置成功更新的组的信息(第二组)
+                        if TomcatFunc.restartWillUpdateTomcatGroup(__puo):  # 重启将要被更新的组的信息(第二组)
+                            __puo.sucessRestartTomcatTags = __checkServiceIsOK.checkServiceIsOk(__puo)  # 检查服务是否可用(第二组)
+                            if len(__puo.sucessRestartTomcatTags) > 0:
+                                __puo.sucessRestartTomcatTags = __puo.getMergeSucessTomcatsTags(firstSucessRestartTomcatTags,__puo.sucessRestartTomcatTags)
+                                if NginxFunc.changeNginxConf(__puo,__puo.sucessRestartTomcatTags): # 重置ng配置文件
+                                    FormatPrint.printInfo(" update finish ")
+                                else:
+                                    FormatPrint.printFalat(" third change NG fail ")
+                            else:
+                                FormatPrint.printFalat(" second check service is fail ")
+                        else:
+                            FormatPrint.printFalat(" second restart tomcat fail ")
+                    else:
+                        FormatPrint.printFalat(" second change NG fail ")
+                else:
+                    FormatPrint.printFalat(" first check service is fail ")
+            else:
+                FormatPrint.printFalat(" first restart tomcat fail ")
+        else:
+            FormatPrint.printFalat(" first change NG fail ")
     else:
         FormatPrint.printFalat(" can not init node-health-status file ")
 
-    del __puo.willUpdateGroup[:]
-
-    #默认情况下，认为配置的tomcat无任何问题，完全可以独立访问
-
-    #====1、更新master组
-    __puo.willUpdateGroup.append("backupgroup")
-    #修改 NG（认为backup组是可以使用的）
-    #替换资源
-    #重启tomcat
-    #修改NG
-    #重启tomgcat
-    #修改NG
-
-    if NginxFunc.changeNginxConf(__puo):
-        pass
-    else:
-        FormatPrint.printError(" modify nginx errof ")
-
-    #替换全部资源
-    if ResourceFunc.replceResource(__puo):
-        #初始化本次配置()
-
-
-        if TomcatFunc.restartWillUpdateTomcatGroup(__puo):
-            __puo.sucessRestartTomcatTags = __checkServiceIsOK.checkServiceIsOk(__puo)
-            if len(__puo.sucessRestartTomcatTags) > 0:
-                if NodeRunStatusFunc.initNodeHealthStatus(__puo, __puo.willUpdateGroup):
-                    if NginxFunc.changeNginxConf(__puo):
-                        FormatPrint.printInfo(" update finish ")
-                    else:
-                        FormatPrint.printError(" modifu Nginx error ")
-                else:
-                    FormatPrint.printFalat(" modify runtime file fail ")
-            else:
-                FormatPrint.printFalat(" service is not available ")
-        else:
-            FormatPrint.printFalat(" restart tomcat fail ")
-
-    else:
-        FormatPrint.printFalat(" replace resource fail ")
 '''
     A、关闭健康检查服务
     B、读取配置文件
