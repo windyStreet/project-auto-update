@@ -40,7 +40,6 @@ class NodeRunStatusFunc(object):
 '''
 def initNodeHealthStatus(pu,groups):
     projectName = pu.projectName
-    deploymentmode = pu.deploymentmode
     tomcatGroup = pu.willUpdateGroup
     currentRunGroup = pu.willUpdateGroup
 
