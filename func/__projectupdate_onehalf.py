@@ -40,7 +40,6 @@ class __projectupdate_onehalf(object):
         sucessTomcatTags.append(secondSucessRestartTomcatTags[:])
         return sucessTomcatTags
 
-
 def process(projectJson):
     __puo = __projectupdate_onehalf()
     __puo.projectJson = projectJson
