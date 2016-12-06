@@ -46,7 +46,7 @@ def initNodeHealthStatus(pu,groups):
     tomcat_conf = pu.projectJson.tomcatConf
     tomcatTags = []
     for group in groups:
-        tomcatTags.append(tomcat_conf['projectname'][projectName][group]['tomcats'])
+        tomcatTags.append(tomcat_conf['projectname'][projectName][group]['tomcatgroupinfo']['tomcats'])
     servicecheckurl = tomcat_conf['projectname'][projectName][tomcatGroup]['servicecheckurl']
     servicecheckpar = tomcat_conf['projectname'][projectName][tomcatGroup]['servicecheckpar']
 
