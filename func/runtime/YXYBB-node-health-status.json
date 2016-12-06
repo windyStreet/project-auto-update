@@ -7,6 +7,7 @@
         "fail-count": 0, 
         "last-check-time": "2016-12-01 16:37:09", 
         "health-check-data": "{\"service\":\"timeservice\",\"version\":\"1.0.0\"}"
+        "upstream-str":""
     }, 
     "2": {
         "status": "n/a", 
