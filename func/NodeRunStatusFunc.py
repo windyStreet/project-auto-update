@@ -74,6 +74,7 @@ def initNodeHealthStatus(pu,groups):
     for tomcat in tomcatTags:
         node_name = tomcat['tomcattag']
         health_check_url = "http://" + tomcat["serviceip"] + ":" + tomcat["port"] + str(servicecheckurl)
+        upstreamStr="server " + str(tomcat['upstreamip']) + ":" + str(tomcat["port"]) + " max_fails=5 fail_timeout=60s weight=" + str(tomcat['upstreamweight'])
         node_health_status[node_name] = {
             'health-check-url': health_check_url,
             'health-check-data': servicecheckpar,
@@ -81,7 +82,8 @@ def initNodeHealthStatus(pu,groups):
             'last-response-data': 'n/a',
             'last-response-time': 0,
             'fail-count': 0,
-            'last-check-time': time.strftime('%Y-%m-%d %H:%M:%S')
+            'last-check-time': time.strftime('%Y-%m-%d %H:%M:%S'),
+            "upstream-str": upstreamStr
         }
     path = sys.path[0] + os.sep + 'runtime' + os.sep + str(projectName) +'-node-health-status.json'
     JsonFileFunc.createFile(path, node_health_status)
