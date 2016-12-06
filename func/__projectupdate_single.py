@@ -6,6 +6,7 @@ import TomcatFunc
 import __checkServiceIsOK
 import NodeRunStatusFunc
 import ResourceFunc
+import NginxFunc
 
 class __projectupdate_single(object):
     def __init__(self):
@@ -43,7 +44,10 @@ def process(projectJson):
         if TomcatFunc.restartWillUpdateTomcatGroup(__pus):
             if len(__checkServiceIsOK.checkServiceIsOk(__pus)) > 0 :
                 if NodeRunStatusFunc.initNodeHealthStatus(__pus,__pus.willUpdateGroup):
-                    FormatPrint.printInfo(" update finish ")
+                    if NginxFunc.changeNginxConf(__pus):
+                        FormatPrint.printInfo(" update finish ")
+                    else:
+                        FormatPrint.printError(" modifu Nginx error ")
                 else:
                     FormatPrint.printFalat(" modify ")
             else:
