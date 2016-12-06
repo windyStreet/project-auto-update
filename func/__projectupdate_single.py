@@ -17,7 +17,8 @@ class __projectupdate_single(object):
         self.updateTime = None
         self.updateType = None
         self.deploymentmode = None
-        self.willUpdateGroup=None
+        self.willUpdateGroup=[]
+        self.sucessRestartTomcatTags=[]
 '''
     备注:在主程序中仅进行变量控制
     A、关闭健康检查服务
@@ -37,14 +38,15 @@ def process(projectJson):
     __pus.updateTime=projectJson.updateTime
     __pus.updateType=projectJson.updateType
     __pus.deploymentmode=projectJson.deploymentmode
-    __pus.willUpdateGroup = "groupmaster"
+    __pus.willUpdateGroup.append("groupmaster")
 
     #替换资源
     if ResourceFunc.replceResource(__pus):
         if TomcatFunc.restartWillUpdateTomcatGroup(__pus):
-            if len(__checkServiceIsOK.checkServiceIsOk(__pus)) > 0 :
+            __pus.sucessRestartTomcatTags = __checkServiceIsOK.checkServiceIsOk(__pus)
+            if len(__pus.sucessRestartTomcatTags) > 0 :
                 if NodeRunStatusFunc.initNodeHealthStatus(__pus,__pus.willUpdateGroup):
-                    if NginxFunc.changeNginxConf(__pus):
+                    if NginxFunc.changeNginxConf(__pus,__pus.sucessRestartTomcatTags):
                         FormatPrint.printInfo(" update finish ")
                     else:
                         FormatPrint.printError(" modifu Nginx error ")
