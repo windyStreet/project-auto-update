@@ -22,14 +22,14 @@ class __projectupdate_onehalf(object):
         self.sucessRestartTomcatTags = []
 
     def setSucessRestartTomcatTags(self):
-        if self.willUpdateGroup[0] == 'backupgroup':
+        if self.willUpdateGroup[0] == 'groupbackup':
             tomcat_conf = self.projectJson.tomcatConf
             tomcats = tomcat_conf['projectname'][self.projectName]['groupmaster']['tomcatgroupinfo']['tomcats']
             for tomcat in tomcats:
                 self.sucessRestartTomcatTags.append(tomcat['tomcattag'])
-        if self.willUpdateGroup[0] == 'mastergroup':
+        if self.willUpdateGroup[0] == 'groupmaster':
             tomcat_conf = self.projectJson.tomcatConf
-            tomcats = tomcat_conf['projectname'][self.projectName]['backupgroup']['tomcatgroupinfo']['tomcats']
+            tomcats = tomcat_conf['projectname'][self.projectName]['groupbackup']['tomcatgroupinfo']['tomcats']
             for tomcat in tomcats:
                 self.sucessRestartTomcatTags.append(tomcat['tomcattag'])
 
@@ -53,11 +53,11 @@ def process(projectJson):
 
     #先进行初始化
     firstSucessRestartTomcatTags=[]
-    __puo.willUpdateGroup.append("mastergroup")
-    __puo.willUpdateGroup.append("backupgroup")
+    __puo.willUpdateGroup.append("groupmaster")
+    __puo.willUpdateGroup.append("groupbackup")
     if NodeRunStatusFunc.initNodeHealthStatus(__puo, __puo.willUpdateGroup):
         del __puo.willUpdateGroup[:]#清空设置的将被更新的组
-        __puo.willUpdateGroup.append("backupgroup")#设置将要被更新的组
+        __puo.willUpdateGroup.append("groupbackup")#设置将要被更新的组
         __puo.setSucessRestartTomcatTags()#设置成功更新的组的信息
         if NginxFunc.changeNginxConf(__puo,__puo.sucessRestartTomcatTags):#修改NG的配置
             if TomcatFunc.restartWillUpdateTomcatGroup(__puo):#重启将要被更新的组的信息
@@ -66,7 +66,7 @@ def process(projectJson):
                 if len(__puo.sucessRestartTomcatTags) > 0:
                     if NginxFunc.changeNginxConf(__puo,__puo.sucessRestartTomcatTags):#重新设置NG配置 == 》 第一组跟新完毕,同时进行了切换
                         #重启第二组
-                        __puo.willUpdateGroup.append("mastergroup")  # 设置将要被更新的组(第二组)
+                        __puo.willUpdateGroup.append("groupmaster")  # 设置将要被更新的组(第二组)
                         __puo.setSucessRestartTomcatTags()  # 设置成功更新的组的信息(第二组)
                         if TomcatFunc.restartWillUpdateTomcatGroup(__puo):  # 重启将要被更新的组的信息(第二组)
                             __puo.sucessRestartTomcatTags = __checkServiceIsOK.checkServiceIsOk(__puo)  # 检查服务是否可用(第二组)
