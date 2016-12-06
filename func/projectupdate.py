@@ -50,10 +50,10 @@ def projectUpdate(projectName,updateVersion,updateType,updateTime):
         FormatPrint.printDebug("curent project is single deploymentmode")
         __projectupdate_single.process(pu)
     elif pu.deploymentmode =='onehalf':
-        FormatPrint.printDebug("curent project is single onehalf")
+        FormatPrint.printDebug("curent project is onehalf deploymentmode")
         __projectupdate_onehalf.process(pu)
     elif pu.deploymentmode == 'double':
-        FormatPrint.printDebug("curent project is single deploymentmode")
+        FormatPrint.printDebug("curent project is double deploymentmode")
         __projectupdate_double.process(pu)
     else:
         FormatPrint.printFalat(str(pu.projectName)+'project configure wrong deploymentmode ')

@@ -18,7 +18,7 @@ class __projectupdate_double(object):
         self.updateTime = None
         self.updateType = None
         self.deploymentmode = None
-        self.willUpdateGroup = None
+        self.willUpdateGroup =[]
         self.sucessRestartTomcatTags = []
 
 '''
@@ -45,10 +45,10 @@ def process(projectJson):
     __pud.deploymentmode=projectJson.deploymentmode
 
     currentRunGroup = RungroupFunc.getRunGroupName(__pud.projectName)
-    if currentRunGroup == "mastergroup":
-        __pud.willUpdateGroup = "backupgroup"
-    elif currentRunGroup == "backupgroup":
-        __pud.willUpdateGroup = "mastergroup"
+    if currentRunGroup == "groupmaster":
+        __pud.willUpdateGroup.append("groupbackup")
+    elif currentRunGroup == "groupbackup":
+        __pud.willUpdateGroup.append("groupmaster")
     else:
         FormatPrint.printFalat(" can not get the will update group , please check config ")
 
@@ -57,7 +57,7 @@ def process(projectJson):
             __pud.sucessRestartTomcatTags = __checkServiceIsOK.checkServiceIsOk(__pud)
             if len(__pud.sucessRestartTomcatTags) > 0:
                 if NodeRunStatusFunc.initNodeHealthStatus(__pud,__pud.willUpdateGroup):
-                    if NginxFunc.changeNginxConf(__pud):
+                    if NginxFunc.changeNginxConf(__pud,__pud.sucessRestartTomcatTags):
                         FormatPrint.printInfo(" update finish ")
                     else:
                         FormatPrint.printError(" modifu Nginx error ")
