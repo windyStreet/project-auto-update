@@ -2,13 +2,7 @@
 #!-*- coding:utf-8 -*-
 import sys
 import os
-import json
-import time
-import urllib2
-import socket
 import FormatPrint
-import TomcatFunc
-import NginxFunc
 import JsonFileFunc
 import __projectupdate_double
 import __projectupdate_onehalf
