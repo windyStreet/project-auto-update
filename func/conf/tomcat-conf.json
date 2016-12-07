@@ -5,7 +5,7 @@
 	"tomcatmaxrestattime":"6",
 	"projectname": {
 		"YXYBB": {
-			"deploymentmode":"onehalf",
+			"deploymentmode":"double",
 			"groupmaster": {
 				"tomcatgroupinfo": {
 					"tomcatprojectxmlpath": "./conf/Catalina/localhost",
@@ -34,7 +34,7 @@
 				"tomcatkillscriptpath":"tomcatkillscriptpath",
 				"tomcatresourceupdatescriptpath":"tomcatresourceupdatescriptpath",
 				"upstreamname": "YXYBB",
-				"nginxconfpath": "G:\\python_work\\project-auto-update\\func\\files\\nginx.conf",
+				"nginxconfpath": "C:/Users/Administrator/PycharmProjects/project-auto-update/func\\files\\nginx.conf",
 				"nginxreloadcmd": "/usr/local/nginx/sbin/nginx -s reload",
 				"nginxreplacestarttag":"###NGINXREPLACE###START###YXYBB###",
 				"nginxreplaceendtag":"###NGINXREPLACE###END###YXYBB###",
@@ -81,6 +81,7 @@
 			}
 		},
 		"LESP": {
+			"deploymentmode":"onehalf",
 			"groupmaster": {
 				"tomcatgroupinfo": {
 					"tomcatprojectxmlpath": "./conf/Catalina/localhost",
@@ -109,7 +110,7 @@
 				"tomcatkillscriptpath":"tomcatkillscriptpath",
 				"tomcatresourceupdatescriptpath":"tomcatresourceupdatescriptpath",
 				"upstreamname": "LESP",
-				"nginxconfpath": "G:\\python_work\\project-auto-update\\func\\files\\nginx.conf",
+				"nginxconfpath": "C:/Users/Administrator/PycharmProjects/project-auto-update/func\\files\\nginx.conf",
 				"nginxreloadcmd": "/usr/local/nginx/sbin/nginx -s reload",
 				"nginxreplacestarttag":"###NGINXREPLACE###START###LESP###",
 				"nginxreplaceendtag":"###NGINXREPLACE###END###LESP###",
@@ -123,7 +124,7 @@
 					"tomcatgrouppath": "/usr/local/tomcatgroup/",
 					"tomcats": [
 						{
-                            "tomcattag":"7",
+                            "tomcattag":"1",
 							"upstreamip": "127.0.0.1",
                             "serviceip":"220.231.252.72",
 							"port": "64001",
