@@ -34,6 +34,7 @@ def startNginx(cmd):
 #重载nginx
 def reloadNginx(cmd):
     FormatPrint.printInfo("exec command:"+str(cmd))
+    return True
     if os.system(cmd) == 0:
         FormatPrint.printInfo("reload ngninx sucess")
         return True
@@ -45,7 +46,7 @@ def reloadNginx(cmd):
 def getUpstreamList(nodehealthstatus,sucessRestartTomcatTags):
     upstreamList=[]
     for tomcatTag in sucessRestartTomcatTags:
-        upstreamList.append(nodehealthstatus[tomcatTag]['upstream-str'])
+        upstreamList.append(nodehealthstatus['nodeinfo'][tomcatTag]['upstream-str'])
     return upstreamList
 
 #修改nginx配置文件
