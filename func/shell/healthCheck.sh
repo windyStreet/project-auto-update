@@ -1,11 +1,12 @@
 #!/bin/bash
+projectname='test'
 workspace=$(cd $(dirname $0)/; pwd)
 cd $workspace
 cd ../
 curDIR=`pwd`
 ControlerFile=$curDIR/Controler.py
-healthchecklog=$curDIR/healthcheck.log
-pidfile=$curDIR/run/healthcheak.pid
+healthchecklog=$curDIR/$projectname-healthcheck.log
+pidfile=$curDIR/run/$projectname-healthcheak.pid
 pidfiledir=$curDIR/run
 
 function check_pid() {
@@ -79,7 +80,12 @@ function status()
         echo stoped
     fi
 }
-
+if [ -n "$2" ] ; then
+    projectname=$2
+else
+    echo "no specify project name "
+    exit 1
+fi
 if [ -n "$1" ] ; then
     if [ "$1" ==  "start" ] ; then
        start
@@ -93,5 +99,5 @@ if [ -n "$1" ] ; then
         echo "only support start|stop|restart|status"
    fi
 else
-    echo "need parmeter  start|stop|restart|status"
+    echo "need par start|stop|restart|status"
 fi
