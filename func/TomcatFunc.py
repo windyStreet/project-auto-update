@@ -76,6 +76,6 @@ def restartWillUpdateTomcatGroup(pu):
     willBeRestartTomcatTags = []
     willBeRestartTomcats =tomcat_conf['projectname'][pu.projectName][pu.willUpdateGroup[0]]['tomcatgroupinfo']['tomcats']
     for tomcat in willBeRestartTomcats:
-        willBeRestartTomcatTags = tomcat['tomcattag']
-    return TomcatFunc.restartTomcats(tomcatstartscriptpath,tomcatkillscriptpath,willBeRestartTomcatTags)
+        willBeRestartTomcatTags.append( tomcat['tomcattag'])
+    return restartTomcats(tomcatstartscriptpath,tomcatkillscriptpath,willBeRestartTomcatTags)
 
