@@ -27,7 +27,7 @@ def projectUpdate(projectName,updateVersion,updateType,updateTime):
     pu.updateTime=updateTime
 
     #A、关闭健康检查服务
-    if HealthCheck.stopHealthCheck():
+    if HealthCheck.stopHealthCheck(projectName):
         pass
     else:
         FormatPrint.printFalat("stopHealthCheck is wrong")
@@ -53,7 +53,7 @@ def projectUpdate(projectName,updateVersion,updateType,updateTime):
         FormatPrint.printFalat(str(pu.projectName)+'project configure wrong deploymentmode ')
 
     #F、启动健康检查服务
-    if HealthCheck.startHealthCheck():
+    if HealthCheck.startHealthCheck(projectName):
         pass
     else:
         FormatPrint.printFalat("startHealthCheck is wrong")
