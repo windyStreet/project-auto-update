@@ -35,10 +35,9 @@ class __projectupdate_onehalf(object):
 
     #合并两次成共的tomcatTags
     def getMergeSucessTomcatsTags(self,firstSucessRestartTomcatTags,secondSucessRestartTomcatTags):
-        sucessTomcatTags=[]
-        sucessTomcatTags.append(firstSucessRestartTomcatTags[:])
-        sucessTomcatTags.append(secondSucessRestartTomcatTags[:])
-        return sucessTomcatTags
+        #firstSucessRestartTomcatTags.extend(secondSucessRestartTomcatTags)
+        #return firstSucessRestartTomcatTags
+        return firstSucessRestartTomcatTags + secondSucessRestartTomcatTags
 
 def process(projectJson):
     __puo = __projectupdate_onehalf()
@@ -58,20 +57,20 @@ def process(projectJson):
         del __puo.willUpdateGroup[:]#清空设置的将被更新的组
         __puo.willUpdateGroup.append("groupbackup")#设置将要被更新的组
         __puo.setSucessRestartTomcatTags()#设置成功更新的组的信息
-        if NginxFunc.changeNginxConf(__puo,__puo.sucessRestartTomcatTags):#修改NG的配置
+        if NginxFunc.changeNginxConf(__puo.projectName,__puo.sucessRestartTomcatTags):#修改NG的配置
             if TomcatFunc.restartWillUpdateTomcatGroup(__puo):#重启将要被更新的组的信息
                 __puo.sucessRestartTomcatTags = __checkServiceIsOK.checkServiceIsOk(__puo)#检查服务是否可用
                 firstSucessRestartTomcatTags=__puo.sucessRestartTomcatTags
                 if len(__puo.sucessRestartTomcatTags) > 0:
-                    if NginxFunc.changeNginxConf(__puo,__puo.sucessRestartTomcatTags):#重新设置NG配置 == 》 第一组跟新完毕,同时进行了切换
+                    if NginxFunc.changeNginxConf(__puo.projectName,__puo.sucessRestartTomcatTags):#重新设置NG配置 == 》 第一组跟新完毕,同时进行了切换
                         #重启第二组
+                        del __puo.willUpdateGroup[:]  # 清空设置的将被更新的组
                         __puo.willUpdateGroup.append("groupmaster")  # 设置将要被更新的组(第二组)
-                        __puo.setSucessRestartTomcatTags()  # 设置成功更新的组的信息(第二组)
                         if TomcatFunc.restartWillUpdateTomcatGroup(__puo):  # 重启将要被更新的组的信息(第二组)
                             __puo.sucessRestartTomcatTags = __checkServiceIsOK.checkServiceIsOk(__puo)  # 检查服务是否可用(第二组)
                             if len(__puo.sucessRestartTomcatTags) > 0:
                                 __puo.sucessRestartTomcatTags = __puo.getMergeSucessTomcatsTags(firstSucessRestartTomcatTags,__puo.sucessRestartTomcatTags)
-                                if NginxFunc.changeNginxConf(__puo,__puo.sucessRestartTomcatTags): # 重置ng配置文件
+                                if NginxFunc.changeNginxConf(__puo.projectName,__puo.sucessRestartTomcatTags): # 重置ng配置文件
                                     FormatPrint.printInfo(" update finish ")
                                 else:
                                     FormatPrint.printFalat(" third change NG fail ")
