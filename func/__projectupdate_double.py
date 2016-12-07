@@ -44,7 +44,7 @@ def process(projectJson):
     __pud.updateType=projectJson.updateType
     __pud.deploymentmode=projectJson.deploymentmode
 
-    currentRunGroup = RungroupFunc.getRunGroupName(__pud.projectName)
+    currentRunGroup = RungroupFunc.getRunGroupName(__pud.projectName)[0]
     if currentRunGroup == "groupmaster":
         __pud.willUpdateGroup.append("groupbackup")
     elif currentRunGroup == "groupbackup":
@@ -57,7 +57,7 @@ def process(projectJson):
             __pud.sucessRestartTomcatTags = __checkServiceIsOK.checkServiceIsOk(__pud)
             if len(__pud.sucessRestartTomcatTags) > 0:
                 if NodeRunStatusFunc.initNodeHealthStatus(__pud,__pud.willUpdateGroup):
-                    if NginxFunc.changeNginxConf(__pud,__pud.sucessRestartTomcatTags):
+                    if NginxFunc.changeNginxConf(__pud.projectName,__pud.sucessRestartTomcatTags):
                         FormatPrint.printInfo(" update finish ")
                     else:
                         FormatPrint.printError(" modifu Nginx error ")
