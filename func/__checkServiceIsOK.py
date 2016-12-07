@@ -15,13 +15,13 @@ return:sucess service tomcatTags
 def checkServiceIsOk(pu):
 
     projectName = pu.projectName
-    tomcatKillScriptPath = pu.tomcatkillscriptpath
-    willUpdateGroup = pu.willUpdateGroup
+    willUpdateGroup = pu.willUpdateGroup[0]
     hostinfostr = pu.hostInfostr
 
     tomcat_conf = pu.projectJson.tomcatConf
-    maxTime = tomcat_conf['endUpdateWaiteMaxTime']
-    endTime = tomcat_conf['tomcatmaxrestattime']
+    maxTime = tomcat_conf['tomcatmaxrestattime']
+    endTime = tomcat_conf['endUpdateWaiteMaxTime']
+    tomcatKillScriptPath = tomcat_conf['projectname'][pu.projectName][willUpdateGroup]['tomcatkillscriptpath']
     restartTomcats = tomcat_conf['projectname'][projectName][willUpdateGroup]['tomcatgroupinfo']['tomcats']
     healCheckUrl = tomcat_conf['projectname'][projectName][willUpdateGroup]['servicecheckurl']
     checkData = tomcat_conf['projectname'][projectName][willUpdateGroup]['servicecheckpar']
