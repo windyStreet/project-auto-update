@@ -5,6 +5,7 @@ import FormatPrint
 import os
 import JsonFileFunc
 import sys
+import time
 
 class NginxFunc(object):
     def __init__(self):
@@ -34,7 +35,7 @@ def startNginx(cmd):
 #重载nginx
 def reloadNginx(cmd):
     FormatPrint.printInfo("exec command:"+str(cmd))
-    return True
+    #return True
     if os.system(cmd) == 0:
         FormatPrint.printInfo("reload ngninx sucess")
         return True
@@ -119,3 +120,29 @@ def changeNginxConf(projectName,sucessRestartTomcatTags):
         return True
     else:
         return False
+
+def initUpstreamRunstatus(projectName):
+    FormatPrint.printDebug("initUpstreamRunstatus")
+    path = sys.path[0] + os.sep + 'runtime' + os.sep + str(projectName) + '-node-health-status.json'
+    nodeHealthStatus = JsonFileFunc.readFile(path)
+
+    path = sys.path[0] + os.sep + 'runtime' + os.sep + str(projectName) + '-upstream-status.json'
+    upstreamStatus = JsonFileFunc.readFile(path)
+    if upstreamStatus != None:
+        return upstreamStatus
+    else:
+        FormatPrint.printWarn(str(projectName) + "-upstream-status.json runtime file not exisit ,will create it ")
+        upstreamStatus = {
+            'total-node-count': len(nodeHealthStatus["nodeinfo"].keys()),
+            'upstream-node-count': len(nodeHealthStatus["nodeinfo"].keys())
+        }
+        for nodeName in nodeHealthStatus["nodeinfo"].keys():
+            upstreamStatus[nodeName]={
+                'last-status': 'running',
+                'is-in-upstream': True,
+                'is-rebooting': False,
+                'rebooting-count': 0,
+                'last-check-time': time.strftime('%Y-%m-%d %H:%M:%S')
+            }
+        JsonFileFunc.readFile(path,upstreamStatus)
+        return upstreamStatus
