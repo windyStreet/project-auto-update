@@ -10,33 +10,35 @@ import nginxupstreamedit
 import FormatPrint
 class HealthCheck(object):
     def __init__(self):
-        pass
+        self.projectName = None
 
     def check(self):
-        nodeshealthcheck.nodesHealthCheck()
-        nginxupstreamedit.nginxUpstreamEdit()
+        nodeshealthcheck.nodesHealthCheck(self.projectName)
+        nginxupstreamedit.nginxUpstreamEdit(self.projectName)
         return True
 
     def checkAllTime(self):
         while True:
-            self.check()
+            self.check(self.projectName)
             time.sleep(60)
 
 #一直启动检查服务
-def checkAllTime():
-    HC = HealthCheck()
-    HC.checkAllTime()
+def checkAllTime(projectName):
+    hc = HealthCheck()
+    hc.projectName = projectName
+    hc.checkAllTime(hc.projectName)
 
 #检查服务单独执行一次
-def checkOnce():
-    HC = HealthCheck()
-    return HC.check()
+def checkOnce(projectName):
+    hc = HealthCheck()
+    hc.projectName = projectName
+    return hc.check(hc.projectName)
 
 #启动健康检查
-def startHealthCheck():
+def startHealthCheck(projectName):
     FormatPrint.printDebug("startHealthCheck")
-    path=sys.path[0] + os.sep + 'shell' + os.sep + 'healthCheck.sh'
-    cmd = path + " start"
+    path=sys.path[0] + os.sep + 'shell' + os.sep + 'healthCheck.sh '
+    cmd = path + " start " + str(projectName)
     if os.system(cmd) == 0:
         FormatPrint.printInfo("启动健康检查服务成功")
         return True
@@ -45,32 +47,29 @@ def startHealthCheck():
         return False
 
 #关闭健康检查
-def stopHealthCheck():
-    FormatPrint.printDebug("stopHealthCheck")
-    path=sys.path[0] + os.sep + 'shell' + os.sep + 'healthCheck.sh'
-    cmd = path + " stop"
+def stopHealthCheck(projectName):
+    path=sys.path[0] + os.sep + 'shell' + os.sep + 'healthCheck.sh '
+    cmd = path + " stop " + str(projectName)
     if os.system(cmd) == 0:
-        FormatPrint.printInfo("关闭健康检查服务成功")
+        FormatPrint.printInfo(" close ngxnx-tomcat service sucess ")
         return True
     else:
-        FormatPrint.printInfo("关闭健康检查服务失败")
+        FormatPrint.printInfo(" close ngxnx-tomcat service fail ")
         return False
 
 #重启健康检查
-def restartHealthCheck():
-    FormatPrint.printDebug("restartHealthCheck")
-    path=sys.path[0] + os.sep + 'shell' + os.sep + 'healthCheck.sh'
-    cmd = path + " restart"
+def restartHealthCheck(projectName):
+    path=sys.path[0] + os.sep + 'shell' + os.sep + 'healthCheck.sh '
+    cmd = path + " restart " + str(projectName)
     if os.system(cmd) == 0:
-        FormatPrint.printInfo("重启健康检查服务成功")
+        FormatPrint.printInfo(" start ngxnx-tomcat service sucess ")
         return True
     else:
-        FormatPrint.printInfo("重启健康检查服务失败")
+        FormatPrint.printInfo(" start ngxnx-tomcat service fail ")
         return False
 
 #健康检查服务状态
-def healthCheckStatus():
-    FormatPrint.printDebug("healthCheckStatus")
-    path = sys.path[0] + os.sep + 'shell' + os.sep + 'healthCheck.sh'
-    cmd = path + " status"
+def healthCheckStatus(projectName):
+    path = sys.path[0] + os.sep + 'shell' + os.sep + 'healthCheck.sh '
+    cmd = path + " status" + str(projectName)
     os.system(cmd)
