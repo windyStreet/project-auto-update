@@ -35,7 +35,6 @@ def startNginx(cmd):
 #重载nginx
 def reloadNginx(cmd):
     FormatPrint.printInfo("exec command:"+str(cmd))
-    #return True
     if os.system(cmd) == 0:
         FormatPrint.printInfo("reload ngninx sucess")
         return True
@@ -121,13 +120,14 @@ def changeNginxConf(projectName,sucessRestartTomcatTags):
     else:
         return False
 
+#初始化upstream文件
 def initUpstreamRunstatus(projectName):
     FormatPrint.printDebug("initUpstreamRunstatus")
-    path = sys.path[0] + os.sep + 'runtime' + os.sep + str(projectName) + '-node-health-status.json'
-    nodeHealthStatus = JsonFileFunc.readFile(path)
+    nodeHealthStatusPath = sys.path[0] + os.sep + 'runtime' + os.sep + str(projectName) + '-node-health-status.json'
+    nodeHealthStatus = JsonFileFunc.readFile(nodeHealthStatusPath)
 
-    path = sys.path[0] + os.sep + 'runtime' + os.sep + str(projectName) + '-upstream-status.json'
-    upstreamStatus = JsonFileFunc.readFile(path)
+    upstreamStatusPath = sys.path[0] + os.sep + 'runtime' + os.sep + str(projectName) + '-upstream-status.json'
+    upstreamStatus = JsonFileFunc.readFile(upstreamStatusPath)
     if upstreamStatus != None:
         return upstreamStatus
     else:
@@ -144,5 +144,5 @@ def initUpstreamRunstatus(projectName):
                 'rebooting-count': 0,
                 'last-check-time': time.strftime('%Y-%m-%d %H:%M:%S')
             }
-        JsonFileFunc.readFile(path,upstreamStatus)
+        JsonFileFunc.createFile(upstreamStatusPath,upstreamStatus)
         return upstreamStatus
