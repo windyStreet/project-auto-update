@@ -13,7 +13,7 @@ cd $workspace
 cd ../
 curDIR=`pwd`
 ControlerFile=$curDIR/Controler.py
-healthchecklog=$curDIR/$projectname-healthcheck.log
+healthchecklog=$workspace/nohuplogs/$projectname-healthcheck.log
 pidfile=$curDIR/run/$projectname-healthcheak.pid
 pidfiledir=$curDIR/run
 
@@ -41,9 +41,6 @@ function start()
         cat $pidfile
 	return 1
     fi
-    echo "python nohup"
-    echo "$ControlerFile -m healthCheckAll -P $projectname"
-    echo "$healthchecklog"
     nohup python $ControlerFile -m healthCheckAll -P $projectname > $healthchecklog 2>&1 &
     sleep 1
     running=`ps -p $! | grep -v "PID TTY" | wc -l`
