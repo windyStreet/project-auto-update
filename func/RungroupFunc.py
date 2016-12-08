@@ -15,9 +15,11 @@ par:projectName
 retunr:currentrungroupname
 '''
 def getRunGroupName(projectName):
+    runGroup = []
     nodeHealStatusFile = sys.path[0] + os.sep + 'runtime' + os.sep + str(projectName) +'-node-health-status.json'
     nodeHealStatus = JsonFileFunc.readFile(nodeHealStatusFile)
     if nodeHealStatus == None:
-        return "groupmaster"
+        runGroup.append("groupmaster")
+        return runGroup
     else:
         return nodeHealStatus["currentrun"]
