@@ -91,7 +91,6 @@ def process(projectJson):
             FormatPrint.printFalat(" can not init node-health-status file ")
     else:
         FormatPrint.printFalat(" replace resource fail ")
-
 '''
     A、关闭健康检查服务
     B、读取配置文件
