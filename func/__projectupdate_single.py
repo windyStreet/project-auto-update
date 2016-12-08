@@ -17,8 +17,8 @@ class __projectupdate_single(object):
         self.updateTime = None
         self.updateType = None
         self.deploymentmode = None
-        self.willUpdateGroup=[]
-        self.sucessRestartTomcatTags=[]
+        self.willUpdateGroup = []
+        self.sucessRestartTomcatTags = []
 '''
     备注:在主程序中仅进行变量控制
     A、关闭健康检查服务
