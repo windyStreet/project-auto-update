@@ -49,8 +49,25 @@ def getUpstreamList(nodehealthstatus,sucessRestartTomcatTags):
         upstreamList.append(nodehealthstatus['nodeinfo'][tomcatTag]['upstream-str'])
     return upstreamList
 
+#删除upstream 文件
+def delUpstreamStatusFile(projectName):
+    orgin_file = sys.path[0] + os.sep + 'runtime' + os.sep + str(projectName)+'-upstream-status.json'
+    if os.path.exists(orgin_file):
+        try:
+            new_file=sys.path[0] + os.sep + 'runtime' + os.sep + time.strftime('%Y%m%d%H%M%S')+str(projectName)+'-upstream-status.json'
+            os.rename(orgin_file, new_file)
+        except Exception as e:
+            FormatPrint.printError("删除upstream-status文件出错:"+str(e))
+            return False
+        return True
+    else:
+        FormatPrint.printInfo("upstream-status文件不存在，未初始化")
+        return True
+
 #修改nginx配置文件
-def changeNginxConf(projectName,sucessRestartTomcatTags):
+def changeNginxConf(projectName,sucessRestartTomcatTags,type="default"):
+    if(type == "update"):
+        delUpstreamStatusFile(projectName)
     path = sys.path[0] + os.sep + 'runtime' + os.sep + str(projectName) + '-node-health-status.json'
     nodehealthstatus = JsonFileFunc.readFile(path)
 
