@@ -42,7 +42,7 @@ def tomatKill():
 #启动健康检查服务
 def startHealthCheck():
     FormatPrint.printDebug("startHealCheck")
-    if HealthCheck.startHealthCheck():
+    if HealthCheck.startHealthCheck(projectName):
         FormatPrint.printInfo("启动健康检查服务成功")
     else:
         FormatPrint.printInfo("启动健康检查服务失败")
@@ -50,7 +50,7 @@ def startHealthCheck():
 #关闭健康检查服务
 def stopHealthCheck():
     FormatPrint.printDebug("stopHealthCheck")
-    if HealthCheck.stopHealthCheck():
+    if HealthCheck.stopHealthCheck(projectName):
         FormatPrint.printInfo("关闭健康检查服务成功")
     else:
         FormatPrint.printInfo("关闭健康检查服务失败")
@@ -58,7 +58,7 @@ def stopHealthCheck():
 #重启健康检查服务
 def restartHealthCheck():
     FormatPrint.printDebug("restartHealthCheck")
-    if HealthCheck.restartHealthCheck():
+    if HealthCheck.restartHealthCheck(projectName):
         FormatPrint.printInfo("重启健康检查服务成功")
     else:
         FormatPrint.printInfo("重启健康检查服务失败")
@@ -66,7 +66,7 @@ def restartHealthCheck():
 #一次性健康检查服务
 def healthCheckOnce():
     FormatPrint.printDebug("startHealthCheckOnce")
-    if HealthCheck.checkOnce():
+    if HealthCheck.checkOnce(projectName):
         FormatPrint.printInfo("一次性健康检查服务成功")
     else:
         FormatPrint.printInfo("一次性健康检查服务失败")
@@ -74,14 +74,14 @@ def healthCheckOnce():
 #多次性健康检查服务
 def healthCheckAll():
     FormatPrint.printDebug("healthCheckAll")
-    if HealthCheck.checkAllTime():
+    if HealthCheck.checkAllTime(projectName):
         FormatPrint.printInfo("多次性健康检查服务成功")
     else:
         FormatPrint.printInfo("多次性健康检查服务失败")
 
 def healthCheckStatus():
     FormatPrint.printDebug("healthCheckStatus")
-    HealthCheck.healthCheckStatus()
+    HealthCheck.healthCheckStatus(projectName)
 
 #帮助
 def help():
