@@ -1,5 +1,13 @@
 #!/bin/bash
-projectname='test'
+
+if [ -n "$2" ] ; then
+    projectname=$2
+    echo $projectname
+else
+    echo "no specify project name "
+    exit 1
+fi
+
 workspace=$(cd $(dirname $0)/; pwd)
 cd $workspace
 cd ../
@@ -33,8 +41,10 @@ function start()
         cat $pidfile
 	return 1
     fi
-
-    nohup python $ControlerFile -m healthCheckAll &> $healthchecklog & 
+    echo "python nohup"
+    echo "$ControlerFile -m healthCheckAll -P $projectname"
+    echo "$healthchecklog"
+    nohup python $ControlerFile -m healthCheckAll -P $projectname > $healthchecklog 2>&1 &
     sleep 1
     running=`ps -p $! | grep -v "PID TTY" | wc -l`
     if [ $running -gt 0 ];then
@@ -80,12 +90,8 @@ function status()
         echo stoped
     fi
 }
-if [ -n "$2" ] ; then
-    projectname=$2
-else
-    echo "no specify project name "
-    exit 1
-fi
+
+
 if [ -n "$1" ] ; then
     if [ "$1" ==  "start" ] ; then
        start
