@@ -60,6 +60,8 @@ def initNodeHealthStatus(pu,groups):
     nginxrootstarttag = tomcat_conf['projectname'][projectName][tomcatGroup[0]]['nginxrootstarttag']
     nginxrootendtag = tomcat_conf['projectname'][projectName][tomcatGroup[0]]['nginxrootendtag']
     nginxrootconf = tomcat_conf['projectname'][projectName][tomcatGroup[0]]['nginxrootconf']
+    tomcatstartscriptpath = tomcat_conf['projectname'][projectName][tomcatGroup[0]]['tomcatstartscriptpath']
+    tomcatkillscriptpath = tomcat_conf['projectname'][projectName][tomcatGroup[0]]['tomcatkillscriptpath']
 
     node_health_status = {}
     node_health_status['currentrun'] = currentRunGroup
@@ -71,6 +73,8 @@ def initNodeHealthStatus(pu,groups):
     node_health_status['nginxrootstarttag'] = nginxrootstarttag
     node_health_status['nginxrootendtag'] = nginxrootendtag
     node_health_status['nginxrootconf'] = nginxrootconf
+    node_health_status['tomcatstartscriptpath'] = tomcatstartscriptpath
+    node_health_status['tomcatkillscriptpath'] = tomcatkillscriptpath
     node_health_status['nodeinfo']={}
 
     for tomcat in newTomcats:
@@ -82,7 +86,6 @@ def initNodeHealthStatus(pu,groups):
             'health-check-data': servicecheckpar,
             'status': 'n/a',
             'last-response-data': 'n/a',
-
             'last-response-time': 0,
             'fail-count': 0,
             'last-check-time': time.strftime('%Y-%m-%d %H:%M:%S'),
