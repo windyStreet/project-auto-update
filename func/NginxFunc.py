@@ -122,7 +122,6 @@ def changeNginxConf(projectName,sucessRestartTomcatTags):
 
 #初始化upstream文件
 def initUpstreamRunstatus(projectName):
-    FormatPrint.printDebug("initUpstreamRunstatus")
     nodeHealthStatusPath = sys.path[0] + os.sep + 'runtime' + os.sep + str(projectName) + '-node-health-status.json'
     nodeHealthStatus = JsonFileFunc.readFile(nodeHealthStatusPath)
 
