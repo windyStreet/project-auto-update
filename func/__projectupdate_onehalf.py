@@ -70,7 +70,7 @@ def process(projectJson):
                             __puo.sucessRestartTomcatTags = __checkServiceIsOK.checkServiceIsOk(__puo)  # 检查服务是否可用(第二组)
                             if len(__puo.sucessRestartTomcatTags) > 0:
                                 __puo.sucessRestartTomcatTags = __puo.getMergeSucessTomcatsTags(firstSucessRestartTomcatTags,__puo.sucessRestartTomcatTags)
-                                if NginxFunc.changeNginxConf(__puo.projectName,__puo.sucessRestartTomcatTags): # 重置ng配置文件
+                                if NginxFunc.changeNginxConf(__puo.projectName,__puo.sucessRestartTomcatTags,"update"): # 重置ng配置文件
                                     FormatPrint.printInfo(" update finish ")
                                 else:
                                     FormatPrint.printFalat(" third change NG fail ")
