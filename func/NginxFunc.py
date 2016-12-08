@@ -79,7 +79,7 @@ def changeNginxConf(projectName,sucessRestartTomcatTags):
     upstream_conf += '\t}\n'
     upstream_conf = upstream_conf.decode('utf-8')
     root_conf = nginxrootstarttag + '\n'
-    root_conf += nginxrootconf
+    root_conf += nginxrootconf + '\n'
     root_conf = root_conf.decode('utf-8')
     FormatPrint.printInfo("修改的nginx的upstream配置文件如下:\n" + upstream_conf.encode('utf-8'))
     FormatPrint.printInfo("修改的nginx的root路径配置文件如下:\n" + root_conf.encode('utf-8'))
