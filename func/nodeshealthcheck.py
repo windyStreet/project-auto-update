@@ -25,9 +25,9 @@ class NodesHealthCheck(object):
         nodeHealthStatus = JsonFileFunc.readFile(path)
 
         for node_name in nodeHealthStatus['nodeinfo'].keys():
-            node = nodeHealthStatus[node_name]
-            url = nodeHealthStatus[node_name]['health-check-url']
-            request_data = nodeHealthStatus[node_name]['health-check-data']
+            node = nodeHealthStatus['nodeinfo'][node_name]
+            url = nodeHealthStatus['nodeinfo'][node_name]['health-check-url']
+            request_data = nodeHealthStatus['nodeinfo'][node_name]['health-check-data']
 
             response = None
             ret_code = 502
@@ -35,7 +35,6 @@ class NodesHealthCheck(object):
 
             try:
                 response = urllib2.urlopen(url, request_data)
-                #response = urllib.request.urlopen(url, request_data)
             except Exception as e:
                 FormatPrint.printWarn(str(self.projectName) + "-" + str(node_name)+"service node exception:"+str(e))
                 if hasattr(e, 'code'):
