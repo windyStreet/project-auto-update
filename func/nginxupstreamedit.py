@@ -8,10 +8,10 @@ import os
 import time
 import NginxFunc
 import JsonFileFunc
+import TomcatFunc
 
 class NginxUpstreamEdit(object):
     def __init__(self):
-        FormatPrint.printInfo("NginxUpstreamEdit")
         self.projectName = None
         self.nodeHealthStatus = None
         self.upstreamStatus = None
@@ -31,6 +31,9 @@ class NginxUpstreamEdit(object):
         node_health_status = self.nodeHealthStatus['nodeinfo']
         upstream_status = self.upstreamStatus
 
+        tomcatStartScriptPath = self.nodeHealthStatus['tomcatstartscriptpath']
+        tomcatKillScriptPath = self.nodeHealthStatus['tomcatkillscriptpath']
+
         for node_name in sorted(node_health_status.keys()):
             if node_health_status[node_name]['status'] == 'running' or \
                             node_health_status[node_name]['status'] == 'error' or \
@@ -48,28 +51,13 @@ class NginxUpstreamEdit(object):
                             node_health_status[node_name]['status'] == 'dead':
                 upstream_changed = True
 
-            if upstream_status[node_name]['last-status'] == 'dead' and node_health_status[node_name][
-                'status'] == 'running':
+            if upstream_status[node_name]['last-status'] == 'dead' and node_health_status[node_name]['status'] == 'running':
                 upstream_changed = True
 
         if alive_count == 0:
-            print('[FATAL]' + time.strftime('%Y-%m-%d %H:%M:%S') + ' - no alive node, abort upstream edit.')
+            FormatPrint.printFalat(' - no alive node, abort upstream edit.')
         elif upstream_changed:
-            upstream_conf = '\tupstream ' + config['upstream-name'] + '\n\t{\n'
-            for alive_node_key in alive_nodes:
-                upstream_conf += '\t\tserver ' + config['upstream']['nodes'][alive_node_key]['upstream-url'] + ' max_fails=5 fail_timeout=60s weight=1;\n'
-            upstream_conf += '\t}\n'
-            print('[INFO]' + time.strftime('%Y-%m-%d %H:%M:%S') + ' - upstream changed, reload nginx.')
-            print(upstream_conf)
-            nginx_conf_path = config['upstream-conf-path']
-            with open(sys.path[0] + os.sep + 'conf' + os.sep + 'nginx.conf', 'r') as nginx_conf_temp_file:
-                with open(nginx_conf_path, 'w') as nginx_conf_file:
-                    for line in nginx_conf_temp_file:
-                        if line.find('###UPSTREAM-PLACE-HOLDER###') != -1:
-                            line = line + upstream_conf
-                        nginx_conf_file.write(line)
-            print('[INFO]' + time.strftime('%Y-%m-%d %H:%M:%S') + ' - execute: ' + config['nginx-reload-cmd'])
-            os.system(config['nginx-reload-cmd'])
+            NginxFunc.changeNginxConf(self.projectName,alive_nodes)
 
         latest_upstream_status = {
             'total-node-count': alive_count + dead_count,
@@ -89,15 +77,11 @@ class NginxUpstreamEdit(object):
             is_rebooting = True
             rebooting_count = upstream_status[dead_node_key]['rebooting-count']
             if upstream_status[dead_node_key]['is-rebooting'] is False:
-                print('[INFO]' + time.strftime('%Y-%m-%d %H:%M:%S') + ' - restart dead node ' + dead_node_key)
-                print('[INFO]' + time.strftime('%Y-%m-%d %H:%M:%S') + ' - execute: ' + config['upstream']['nodes'][dead_node_key]['stop-cmd'])
-                os.system(config['upstream']['nodes'][dead_node_key]['stop-cmd'])
-                time.sleep(1)
-                print('[INFO]' + time.strftime('%Y-%m-%d %H:%M:%S') + ' - execute: ' + config['upstream']['nodes'][dead_node_key]['start-cmd'])
-                os.system(config['upstream']['nodes'][dead_node_key]['start-cmd'])
+                FormatPrint.printInfo(' - restart dead node ' + dead_node_key)
+                TomcatFunc.restartTomcat(tomcatStartScriptPath,tomcatKillScriptPath,dead_node_key)
             else:
                 rebooting_count += 1
-                print('[INFO]' + time.strftime('%Y-%m-%d %H:%M:%S') + ' - dead node ' + dead_node_key + ' is in rebooting count: ' + str(rebooting_count))
+                FormatPrint.printInfo(' - dead node ' + str(dead_node_key) + ' is in rebooting count: ' + str(rebooting_count))
                 if rebooting_count % 5 == 0:
                     is_rebooting = False
 
@@ -108,13 +92,12 @@ class NginxUpstreamEdit(object):
                 'rebooting-count': rebooting_count,
                 'last-check-time': time.strftime('%Y-%m-%d %H:%M:%S')
             }
-
-        with open(sys.path[0] + os.sep + 'runtime' + os.sep + 'upstream-status.json', 'w') as new_status_file:
-            new_status_file.write(json.dumps(latest_upstream_status, indent=4))
+        upstreamPath = sys.path[0] + os.sep + 'runtime' + os.sep + str(self.projectName) +'-upstream-status.json'
+        JsonFileFunc.createFile(upstreamPath,latest_upstream_status)
 
 def nginxUpstreamEdit(projectName):
     nue=NginxUpstreamEdit()
     nue.projectName = projectName
-    nue.upstreamStatus = NginxFunc.initUpstreamRunstatus()
+    nue.upstreamStatus = NginxFunc.initUpstreamRunstatus(projectName)
     nue.readNodeHealthStatus()
     nue.checkUpstream()
