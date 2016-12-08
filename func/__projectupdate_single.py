@@ -46,7 +46,7 @@ def process(projectJson):
             __pus.sucessRestartTomcatTags = __checkServiceIsOK.checkServiceIsOk(__pus)
             if len(__pus.sucessRestartTomcatTags) > 0 :
                 if NodeRunStatusFunc.initNodeHealthStatus(__pus,__pus.willUpdateGroup):
-                    if NginxFunc.changeNginxConf(__pus.projectName,__pus.sucessRestartTomcatTags):
+                    if NginxFunc.changeNginxConf(__pus.projectName,__pus.sucessRestartTomcatTags,"update"):
                         FormatPrint.printInfo(" update finish ")
                     else:
                         FormatPrint.printError(" modifu Nginx error ")
