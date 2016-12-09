@@ -49,10 +49,10 @@ def process(projectJson):
     __puo.updateType = projectJson.updateType
     __puo.deploymentmode = projectJson.deploymentmode
 
+    #先进行初始化
+    __puo.willUpdateGroup.append("groupmaster")
+    __puo.willUpdateGroup.append("groupbackup")
     if ResourceFunc.replceResource(__puo):
-        #先进行初始化
-        __puo.willUpdateGroup.append("groupmaster")
-        __puo.willUpdateGroup.append("groupbackup")
         if NodeRunStatusFunc.initNodeHealthStatus(__puo, __puo.willUpdateGroup):
             del __puo.willUpdateGroup[:]#清空设置的将被更新的组
             __puo.willUpdateGroup.append("groupbackup")#设置将要被更新的组
