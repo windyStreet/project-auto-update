@@ -3,12 +3,17 @@
 import smtplib
 from email.mime.text import MIMEText
 from email.utils import formataddr
+import JsonFileFunc
+import sys
+import os
+import FormatPrint
 
 class MailFunc(object):
     def __init__(self):
-        self.message=None
-        self.sender=None
-        self.receiver=None
+        self.mailConf = None
+        self.message = None
+        self.sender = None
+        self.receiver = None
     #发送邮件
     def sendMail(self):
         msg = MIMEText("abc", 'plain', 'utf-8')
@@ -28,6 +33,19 @@ class MailFunc(object):
             server.quit()
         except smtplib.SMTPException as e:
             print "Error: 无法发送邮件"+str(e)
+
+
+    def initMailConf(self):
+        mailConfPath = sys.path[0] + os.sep + 'conf' + os.sep + 'tomcat-conf.json'
+        self.mailConf = JsonFileFunc.readFile(mailConfPath)
+        if self.mailConf is None:
+            FormatPrint.printError("tomcat-conf.json file is not exist")
+
+def sendMail(level):
+    pass
+def initMailCofFile():
+    pass
+
 
 if __name__ == '__main__':
     MF=MailFunc()
