@@ -51,7 +51,6 @@ def process(projectJson):
 
     if ResourceFunc.replceResource(__puo):
         #先进行初始化
-        firstSucessRestartTomcatTags=[]
         __puo.willUpdateGroup.append("groupmaster")
         __puo.willUpdateGroup.append("groupbackup")
         if NodeRunStatusFunc.initNodeHealthStatus(__puo, __puo.willUpdateGroup):
@@ -61,7 +60,7 @@ def process(projectJson):
             if NginxFunc.changeNginxConf(__puo.projectName,__puo.sucessRestartTomcatTags):#修改NG的配置
                 if TomcatFunc.restartWillUpdateTomcatGroup(__puo):#重启将要被更新的组的信息
                     __puo.sucessRestartTomcatTags = __checkServiceIsOK.checkServiceIsOk(__puo)#检查服务是否可用
-                    firstSucessRestartTomcatTags=__puo.sucessRestartTomcatTags
+                    firstSucessRestartTomcatTags = __puo.sucessRestartTomcatTags
                     if len(__puo.sucessRestartTomcatTags) > 0:
                         if NginxFunc.changeNginxConf(__puo.projectName,__puo.sucessRestartTomcatTags):#重新设置NG配置 == 》 第一组跟新完毕,同时进行了切换
                             #重启第二组
@@ -70,7 +69,7 @@ def process(projectJson):
                             if TomcatFunc.restartWillUpdateTomcatGroup(__puo):  # 重启将要被更新的组的信息(第二组)
                                 __puo.sucessRestartTomcatTags = __checkServiceIsOK.checkServiceIsOk(__puo)  # 检查服务是否可用(第二组)
                                 if len(__puo.sucessRestartTomcatTags) > 0:
-                                    __puo.sucessRestartTomcatTags = __puo.getMergeSucessTomcatsTags(firstSucessRestartTomcatTags,__puo.sucessRestartTomcatTags)
+                                    __puo.sucessRestartTomcatTags = __puo.getMergeSucessTomcatsTags(firstSucessRestartTomcatTags, __puo.sucessRestartTomcatTags)
                                     if NginxFunc.changeNginxConf(__puo.projectName,__puo.sucessRestartTomcatTags,"update"): # 重置ng配置文件
                                         FormatPrint.printInfo(" update finish ")
                                     else:
