@@ -27,8 +27,7 @@ def replceResource(pu):
     tomcat_conf = pu.projectJson.tomcatConf
     command = tomcat_conf['projectname'][pu.projectName][pu.willUpdateGroup[0]]['tomcatresourceupdatescriptpath'] + " " + str(pu.updateVersion) + " " + str(pu.updateTime)
     FormatPrint.printInfo("执行资源替换脚本:" + str(command))
-    # if os.system(command) == 0:
-    if True:
+    if os.system(command) == 0:
         FormatPrint.printInfo("replace resource sucess ")
         return True
     else:
