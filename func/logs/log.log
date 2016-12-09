@@ -1,0 +1,31 @@
+[DEBUG]2016-12-08 17:59:33  startHealthCheckOnce
+[INFO]2016-12-08 17:59:33  check nginx-tomcat node service is 1
+[INFO]2016-12-08 17:59:33  节点正常:LESP-1
+[INFO]2016-12-08 17:59:33  节点正常:LESP-8
+[INFO]2016-12-08 17:59:33  节点正常:LESP-3
+[WARN]2016-12-08 17:59:34  LESP-4service node exception:<urlopen error [Errno 10061] >
+[ERROR]2016-12-08 17:59:34  node deadLESP-4 has been detected DEAD for fail-count 389
+[INFO]2016-12-08 17:59:34   - dead node 4 is in rebooting count: 319
+[INFO]2016-12-08 17:59:34  一次性健康检查服务成功
+[DEBUG]2016-12-08 18:00:43  startHealthCheckOnce
+[INFO]2016-12-08 18:00:43  check nginx-tomcat node service is 1
+[INFO]2016-12-08 18:00:44  节点正常:LESP-1
+[INFO]2016-12-08 18:00:44  节点正常:LESP-8
+[INFO]2016-12-08 18:00:44  节点正常:LESP-3
+[ WARN]2016-12-08 18:00:45  LESP-4service node exception:<urlopen error [Errno 10061] >
+[ ERROR]2016-12-08 18:00:45  node deadLESP-4 has been detected DEAD for fail-count 391
+[INFO]2016-12-08 18:00:45   - restart dead node 4
+[INFO]2016-12-08 18:00:45  当前关闭的tomcat编号为4
+[DEBUG]2016-12-08 18:00:45  当前执行的命令为:tomcatkillscriptpath 4
+[INFO]2016-12-08 18:00:45  关闭tomcat4失败
+[INFO]2016-12-08 18:00:45  重启tomcat失败
+[INFO]2016-12-08 18:00:45  一次性健康检查服务成功
+[DEBUG]2016-12-08 18:01:03  startHealthCheckOnce
+[ INFO]2016-12-08 18:01:03  check nginx-tomcat node service is 1
+[ INFO]2016-12-08 18:01:03  节点正常:LESP-1
+[ INFO]2016-12-08 18:01:03  节点正常:LESP-8
+[ INFO]2016-12-08 18:01:03  节点正常:LESP-3
+[ WARN]2016-12-08 18:01:04  LESP-4service node exception:<urlopen error [Errno 10061] >
+[ERROR]2016-12-08 18:01:04  node deadLESP-4 has been detected DEAD for fail-count 392
+[ INFO]2016-12-08 18:01:04   - dead node 4 is in rebooting count: 321
+[ INFO]2016-12-08 18:01:04  一次性健康检查服务成功

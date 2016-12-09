@@ -1,0 +1,21 @@
+[INFO]2016-12-08 17:59:33  check nginx-tomcat node service is 1
+[INFO]2016-12-08 17:59:33  节点正常:LESP-1
+[INFO]2016-12-08 17:59:33  节点正常:LESP-8
+[INFO]2016-12-08 17:59:33  节点正常:LESP-3
+[INFO]2016-12-08 17:59:34   - dead node 4 is in rebooting count: 319
+[INFO]2016-12-08 17:59:34  一次性健康检查服务成功
+[INFO]2016-12-08 18:00:43  check nginx-tomcat node service is 1
+[INFO]2016-12-08 18:00:44  节点正常:LESP-1
+[INFO]2016-12-08 18:00:44  节点正常:LESP-8
+[INFO]2016-12-08 18:00:44  节点正常:LESP-3
+[INFO]2016-12-08 18:00:45   - restart dead node 4
+[INFO]2016-12-08 18:00:45  当前关闭的tomcat编号为4
+[INFO]2016-12-08 18:00:45  关闭tomcat4失败
+[INFO]2016-12-08 18:00:45  重启tomcat失败
+[INFO]2016-12-08 18:00:45  一次性健康检查服务成功
+[ INFO]2016-12-08 18:01:03  check nginx-tomcat node service is 1
+[ INFO]2016-12-08 18:01:03  节点正常:LESP-1
+[ INFO]2016-12-08 18:01:03  节点正常:LESP-8
+[ INFO]2016-12-08 18:01:03  节点正常:LESP-3
+[ INFO]2016-12-08 18:01:04   - dead node 4 is in rebooting count: 321
+[ INFO]2016-12-08 18:01:04  一次性健康检查服务成功
